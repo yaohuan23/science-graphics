@@ -1,6 +1,6 @@
 # Science-Graphics
 Collection of R scripts to generate common science figures.
-The purpose of this repository is to provide nicely formatted figures directly from the files containing the data, given the specific type of analysis or purpose.
+The purpose of this repository is to provide nicely formatted figures by DEFAULT directly from the corresponding data table. Note that each plot is very specific for a type of analysis or purpose.
 
 Some of the supported scientific figures are:
 - Variable Evolution
@@ -10,5 +10,6 @@ Some of the supported scientific figures are:
   - Histograms
   - Density
 - Benchmarking
+  - Multi-class Classification
   - ROC Curves
   - Precision-Recall Curves

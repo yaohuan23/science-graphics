@@ -5,17 +5,24 @@
 # Aleix Lafita - 01.2016
 
 # Import all the source files needed
-source("../source/DataParser.R")
+source("../source/InputOutput.R")
 source("../source/Benchmarking.R")
 
-# USER OPTIONS
-file = "example2"
+# Project name
+project = "example2"
 
-# Parse the cmd line arguments
-data = parseFile(file, commandArgs(trailingOnly=TRUE))
+# Parse args if executed from the cmd line
+args = commandArgs(trailingOnly=TRUE)
+if (length(args)==0) {
+  cat("No argument given, using default project name...\n")
+} else {
+  project = args[1]
+}
 
-# Create the figure
-p <- multiLabelPlot(data[c(2, 3)])
+data = parseFile(project)
 
-# Save the figure to the figures folder
-savePDF(file, p)
+table = toClassificationTable(data[c(2, 3)])
+writeResult(paste(project, "_class_table", sep=""), table)
+
+p = multiLabelPlot(table)
+saveFigure(project, p)

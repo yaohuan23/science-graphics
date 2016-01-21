@@ -6,32 +6,35 @@ The purpose of this repository is to provide nicely formatted figures by DEFAULT
 
 ### Examples
 Some of the supported scientific applications are:
-- Variable Evolution
+- Evolution
   - ODEs
-  - MonteCarlo Simulations
-- Variable Distributions
+  - MonteCarlo
+  - Simulations
+- Distributions
   - Histograms and Densities
-  - Multiple-Set Distribution
 - Benchmarking
   - ![Multi-Label Classification](figures/example2.pdf)
   - ROC Curves
   - ![Precision-Recall Curves](figures/example3.pdf)
 
 ### Usage
-Save the raw data file in the correct CSV format in the **data** folder. Run the script from the command line by typing:
+Save the raw data file in the correct CSV format (`projectname.csv`) in the **data** folder. 
+Run the script from the command line by typing:
 
 ```bash
-./Path/To/Script.R filename
+./Path/To/Script.R projectname
 ```
-Where `filename` is the name of the file without the extension. An example is:
+Where `projectname` is the name of the project without the extension. 
+An example is:
 
 ```bash
-./MultipleLabelClassification.R example2
+./MultiLabelClassification.R example2
 ```
-
-The generated figure will be stored in the **figures** folder in PDF format, with the same name as the file.
+Any created figures will be stored in the **figures** folder, in PDF format, as `projectname.pdf`.
+Any created table results will be stored in the **results** folder, in CSV format, as `projectname.csv`.
 
 ### Dependencies
-
-- ggplot2
-- R3.1
+- **R** version 3.0.2 or higher.
+- Packages: 
+  - `ggplot2`
+  - `reshape`

@@ -12,18 +12,30 @@ library(plyr)
 #' @return a ggplot object
 multiLabelPlot <- function(data) {
   
-  # Scale the data to 100%
-  mtable = melt(table)
+  # Scale the data to 100% and plot bars
+  mtable = melt(table, variable.name = "Prediction", value.name = "Count")
   scaled = ddply(mtable, "Truth", transform,
-                 Percentage = value / sum(value) * 100)
+                 Percentage = Count / sum(Count) * 100)
   
-  # Plot the scaled data
-  p = ggplot(scaled, aes(x=Truth, y=Percentage, fill=Prediction,
-                          alpha=as.character(Truth)==as.character(Prediction))) + 
-    geom_bar(stat="identity") + 
-    scale_alpha_discrete(range=c(0.5,1)) +
+  p = ggplot(scaled) + 
+    geom_bar(stat="identity", 
+             aes(x=Truth, y=Percentage, fill=Prediction, 
+                 alpha=as.character(Truth)==as.character(Prediction))) +
+    scale_alpha_discrete(range=c(0.3,1)) +
+    #scale_fill_brewer(palette="Set2") +
     guides(alpha=FALSE) +
     theme_bw()
+  
+  # Add the total number of observables at the top of the bars
+  data$Total = rowSums(data[,-1])
+  data$Position = rep(105,nrow(data))
+  p = p + geom_text(data=data, aes(x=Truth, y=Position, label=Total), size=4)
+  
+  # Add a precision line for each category
+  tableTP = subset(mtable, as.character(Truth)==as.character(Prediction))
+  tableTP$Precision = (100 * tableTP$Count / data$Total)
+  p + geom_point(data=tableTP, aes(x=Truth, y=Precision), 
+                 colour="black", size=10, shape="-")
 }
 
 #' Create a classification table from a set of predictions.
@@ -38,7 +50,7 @@ toClassificationTable <- function(data) {
   
   # Transform the raw data into a classification table
   data$Count = rep(1,nrow(data)) # add new column of ones
-  table = cast(data, Truth ~ Prediction, sum, value="Count")
+  table = dcast(data, Truth ~ Prediction, sum, value.var="Count")
 }
 
 #' Represent the precision of a ranking result in function of the number

@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-# This script plots the accuracy of the classifier for each label.
 # The format of the data has to be in three columns, corresponding
 # to Name, Truth, Prediction.
 # Aleix Lafita - 01.2016
@@ -21,8 +20,9 @@ if (length(args)==0) {
 
 data = parseFile(project)
 
-table = toClassificationTable(data[c(2, 3)])
-writeResult(paste(project, "_class_table", sep=""), table)
+matrix = toConfusionMatrix(data[c(2,3)])
+print(matrix)
+writeResult(paste(project, "_confusionMatrix", sep=""), matrix)
 
-p = multiLabelPlot(table)
+p = plotConfusionMatrix(matrix)
 saveFigure(project, p)

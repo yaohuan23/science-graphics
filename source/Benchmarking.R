@@ -1,21 +1,24 @@
-# Plots for benchmarking applications
+# Plots for benchmarking classifiers
 # Aleix Lafita - 01.2016
 
 library(ggplot2)
 library(reshape2)
 library(plyr)
+library(mlearning)
 
-#' Represents the accuracy of the classifier for each label, coloring
-#' the 100% bar with the percentage of each predicted label for each 
-#' true label.
-#' @param data classification table
+#' Plot the confusion matrix of a classifier with the true (actual) class in the
+#' x axis and a stacked bar proportional to the predicted class frequency in the
+#' y axis. The stacked bars are colored by class name.
+#' The total numbers of each true class are displayed at the top.
+#' 
+#' @param confusion matrix
 #' @return a ggplot object
-multiLabelPlot <- function(data) {
+plotConfusionMatrixBar <- function(matrix) {
   
-  # Scale the data to 100% and plot bars
-  mtable = melt(table, variable.name = "Prediction", value.name = "Count")
+  # Scale the data to 100%
+  mtable = data.frame(matrix)
   scaled = ddply(mtable, "Truth", transform,
-                 Percentage = Count / sum(Count) * 100)
+                 Percentage = Count / sum(Freq) * 100)
   
   p = ggplot(scaled) + 
     geom_bar(stat="identity", 
@@ -31,17 +34,29 @@ multiLabelPlot <- function(data) {
   data$Position = rep(105,nrow(data))
   p = p + geom_text(data=data, aes(x=Truth, y=Position, label=Total), size=4)
   
-  # Add a precision line for each category
-  tableTP = subset(mtable, as.character(Truth)==as.character(Prediction))
-  tableTP$Precision = (100 * tableTP$Count / data$Total)
-  p + geom_point(data=tableTP, aes(x=Truth, y=Precision), 
-                 colour="black", size=10, shape="-")
 }
 
-#' Create a classification table from a set of predictions.
+#' Plot the confusion matrix of a classifier with the true (actual) class in the
+#' x axis and the predicted class in the y axis. The entries are are colored by 
+#' class prediction frequency and percentage values are also shown in the tiles.
+#' 
+#' @param confusion matrix
+#' @return a ggplot object
+plotConfusionMatrix <- function(matrix) {
+  
+  confusion = data.frame(matrix)
+  scaled = ddply(confusion, "Truth", transform,
+                 Percentage = Freq / sum(Freq))
+  
+  p <- ggplot(scaled) + geom_tile(aes(x=Truth, y=Prediction, fill=Percentage)) +
+    geom_text(aes(x=Truth,y=Prediction, label=sprintf("%.0f", Freq)))
+  
+}
+
+#' Create a confusion matrix from a set of predictions of a classifier.
 #' @param data list of predictions in two columns (truth, prediction)
-#' @return classification table
-toClassificationTable <- function(data) {
+#' @return cofusion matrix in data frame
+toConfusionMatrixOld <- function(data) {
   
   # Ensure propper names of the data and all factors
   names(data) = c("Truth", "Prediction")
@@ -51,6 +66,27 @@ toClassificationTable <- function(data) {
   # Transform the raw data into a classification table
   data$Count = rep(1,nrow(data)) # add new column of ones
   table = dcast(data, Truth ~ Prediction, sum, value.var="Count")
+  
+}
+
+
+#' Create a confusion matrix from a set of predictions of a classifier.
+#' @param data list of predictions in two columns (truth, prediction)
+#' @return cofusion matrix
+toConfusionMatrix <- function(data) {
+  
+  # Ensure propper names of the data
+  names(data) = c("Truth", "Prediction")
+  
+  # Convert to factors the labels and ensure same levels
+  data$Truth = factor(data$Truth)
+  data$Prediction = factor(data$Prediction)
+  classes <- unique(c(levels(data$Truth), levels(data$Prediction)))
+  data$Truth <- factor(data$Truth, levels = classes)
+  data$Prediction <- factor(data$Prediction, levels = classes)
+  
+  confusion(data, vars = names(data))
+  
 }
 
 #' Represent the precision of a ranking result in function of the number

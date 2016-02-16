@@ -2,7 +2,8 @@
 # Aleix Lafita - 02.2016
 
 #' Represent the precision of a ranking result in function of the number
-#' of retrieved results (recall)
+#' of retrieved results (recall).
+#' 
 #' @param data a single column df with 1 if the result is relevant, 0 otherwise
 #' @return a ggplot object
 precisionRecallCurve <- function(data) {
@@ -27,7 +28,7 @@ precisionRecallCurve <- function(data) {
   table = melt(data[,c("Recall","P1","P2")], 
                id.vars = "Recall", value.name = "Precision")
   
-  # Create the curve
+  # Create the curve with [0,1] axis and default colors
   p = ggplot(table, aes(x=Recall, y=Precision, colour=variable)) + 
     geom_line() + xlim(0.0, 1.0) + ylim(0.0,1.0) +
     guides(colour=FALSE) +

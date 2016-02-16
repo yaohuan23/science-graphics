@@ -48,30 +48,19 @@ plotConfusionMatrix <- function(matrix) {
   scaled = ddply(confusion, "Actual", transform,
                  Fraction = Freq / sum(Freq))
   
-  p <- ggplot(scaled) + geom_tile(aes(x=Actual, y=Prediction, fill=Fraction)) +
-    geom_text(aes(x=Actual,y=Prediction, label=sprintf("%.0f", Freq))) +
+  # Create tiles colored by fraction of prediction class
+  p = ggplot(scaled) + geom_tile(aes(x=Actual, y=Prediction, fill=Fraction))
+  
+  # Add the total observed values, except for zeros, to the tiles
+  nonzero = scaled[scaled$Freq>0,]
+  p = p + geom_text(data=nonzero, aes(x=Actual,y=Prediction, label=sprintf('%0.f', Freq))) +
+    scale_fill_gradient(low="white", high="tomato3", na.value="white") +
     theme_bw()
   
 }
 
 #' Create a confusion matrix from a set of predictions of a classifier.
-#' @param data list of predictions in two columns (truth, prediction)
-#' @return cofusion matrix in data frame
-toConfusionMatrixDeprecated <- function(data) {
-  
-  # Ensure propper names of the data and all factors
-  names(data) = c("Actual", "Prediction")
-  data$Actual = factor(data$Actual)
-  data$Prediction = factor(data$Prediction)
-  
-  # Transform the raw data into a classification table
-  data$Count = rep(1,nrow(data)) # add new column of ones
-  table = dcast(data, Actual ~ Prediction, sum, value.var="Count")
-  
-}
-
-
-#' Create a confusion matrix from a set of predictions of a classifier.
+#' 
 #' @param data list of predictions in two columns (truth, prediction)
 #' @return cofusion matrix
 toConfusionMatrix <- function(data) {
@@ -88,5 +77,22 @@ toConfusionMatrix <- function(data) {
   data$Prediction <- factor(data$Prediction, levels = classes)
   
   confusion(data, vars = names(data))
+  
+}
+
+#' Create a confusion matrix from a set of predictions of a classifier.
+#' 
+#' @param data list of predictions in two columns (truth, prediction)
+#' @return cofusion matrix in data frame
+toConfusionMatrixDeprecated <- function(data) {
+  
+  # Ensure propper names of the data and all factors
+  names(data) = c("Actual", "Prediction")
+  data$Actual = factor(data$Actual)
+  data$Prediction = factor(data$Prediction)
+  
+  # Transform the raw data into a classification table
+  data$Count = rep(1,nrow(data)) # add new column of ones
+  table = dcast(data, Actual ~ Prediction, sum, value.var="Count")
   
 }

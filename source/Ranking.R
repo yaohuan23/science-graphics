@@ -1,6 +1,9 @@
 # Plots for evaluating the performance of a ranking system or algorithm
 # Aleix Lafita - 02.2016
 
+library(ggplot2)
+library(reshape2)
+
 #' Represent the precision of a ranking result in function of the number
 #' of retrieved results (recall).
 #' 

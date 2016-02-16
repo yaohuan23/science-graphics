@@ -12,10 +12,8 @@ Some of the supported applications are:
   - ![Confusion Matrix](figures/example2.pdf)
 - [Ranking](source/Ranking.R)
   - ![Precision-Recall Curve](figures/example3.pdf)
-- Evolution
-  - ODEs
-  - MonteCarlo
-  - Simulations
+- [Evolution](source/Evolution.R)
+  - [Multiple Variables](figures/example4.pdf)
 - Distribution
   - Single and Multiple Variable Histogram and Density
 - Network
@@ -46,6 +44,7 @@ The script does not delete any of the files in the **data** folder, so the raw d
 - **R** version `3.0.2` or higher.
 - Packages: 
   - `ggplot2`
+  - `gridExtra`
   - `reshape2`
   - `plyr`
   - `mlearning`

@@ -18,7 +18,7 @@ plotConfusionMatrixBar <- function(matrix) {
   # Scale the data to 100%
   mtable = data.frame(matrix)
   scaled = ddply(mtable, "Actual", transform,
-                 Percentage = Count / sum(Freq) * 100)
+                 Percentage = Freq / sum(Freq) * 100)
   
   p = ggplot(scaled) + 
     geom_bar(stat="identity", 
@@ -37,12 +37,14 @@ plotConfusionMatrixBar <- function(matrix) {
 }
 
 #' Plot the confusion matrix of a classifier with the true (actual) class in the
-#' x axis and the predicted class in the y axis. The entries are are colored by 
-#' the fraction of predicted class and the total values are printed in the tiles.
+#' x axis and the predicted class in the y axis. 
+#' The entries are are colored by the fraction of predicted class and the total 
+#' values are printed in the tiles.
 #' 
 #' @param confusion matrix
+#' @param labelSize size of the text labels for total values
 #' @return a ggplot object
-plotConfusionMatrix <- function(matrix) {
+plotConfusionMatrix <- function(matrix, labelSize = 4) {
   
   confusion = data.frame(matrix)
   scaled = ddply(confusion, "Actual", transform,
@@ -53,7 +55,9 @@ plotConfusionMatrix <- function(matrix) {
   
   # Add the total observed values, except for zeros, to the tiles
   nonzero = scaled[scaled$Freq>0,]
-  p = p + geom_text(data=nonzero, aes(x=Actual,y=Prediction, label=sprintf('%0.f', Freq))) +
+  p = p + geom_text(data=nonzero, aes(x=Actual,y=Prediction, 
+                                      label=sprintf('%0.f', Freq)),
+                    size = labelSize) +
     scale_fill_gradient(low="white", high="tomato3", na.value="white") +
     theme_bw()
   

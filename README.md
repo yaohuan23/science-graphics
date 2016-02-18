@@ -8,15 +8,16 @@ Note that each script (which generates a single figure and an optional text outp
 
 ### Applications
 Some of the supported applications are:
+- [Distribution](source/Distribution.R)
+  - [Multivariate Histogram and Density](figures/example1.pdf)
+  - Grouped Multivariate Barplot
+  - Pie Chart
 - [Classification](source/Classification.R)
   - ![Confusion Matrix](figures/example2.pdf)
 - [Ranking](source/Ranking.R)
   - ![Precision-Recall Curve](figures/example3.pdf)
 - [Evolution](source/Evolution.R)
   - [Multitype Multivariate Evolution](figures/example4.pdf)
-- [Distribution](source/Distribution.R)
-  - [Multivariate Histogram and Density](figures/example1.pdf)
-  - Pie Chart
 - Network
   - Cyclic Graph
   - Directed Acyclic Graph (DAG)

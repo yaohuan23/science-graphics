@@ -14,9 +14,12 @@ Some of the supported applications are:
   - ![Precision-Recall Curve](figures/example3.pdf)
 - [Evolution](source/Evolution.R)
   - [Multiple Variables](figures/example4.pdf)
-- Distribution
-  - Single and Multiple Variable Histogram and Density
+- [Distribution](source/Distribution.R)
+  - [Multivariate Histogram and Density](figures/example1.pdf)
+  - Pie Chart
 - Network
+  - Cyclic Graph
+  - Directed Acyclic Graph (DAG)
 
 ### Usage
 Save the raw data file in the correct CSV format (`projectname.csv`) in the **data** folder. 

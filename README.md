@@ -13,7 +13,7 @@ Some of the supported applications are:
 - [Ranking](source/Ranking.R)
   - ![Precision-Recall Curve](figures/example3.pdf)
 - [Evolution](source/Evolution.R)
-  - [Multiple Variables](figures/example4.pdf)
+  - [Multitype Multivariate Evolution](figures/example4.pdf)
 - [Distribution](source/Distribution.R)
   - [Multivariate Histogram and Density](figures/example1.pdf)
   - Pie Chart

@@ -2,6 +2,7 @@
 # Aleix Lafita - 02.2016
 
 library(ggplot2)
+library(reshape2)
 library(plyr)
 
 #' Plot the data distribution of the variables as a density with 
@@ -44,4 +45,44 @@ plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
   }                  
   return(p)
 
+}
+
+
+#' Plot the frequency of each class in each group.
+#' The total number of observables are printed at the top.
+#' 
+#' @param data two columns, group name and class
+#' @return ggplot2 object
+stackedBarplot = function(data) {
+  
+  # Store the original names in the data and rename them
+  original = names(data)
+  names(data) = c("Group", "Class")
+  
+  # Cast the group-class pairs together and count frequency
+  data$Freq = rep(1,nrow(data))
+  table = dcast(data, Group ~ Class, sum, value.var="Freq")
+  data = melt(table)
+  data = ddply(data, "Group", transform,
+                 Percentage = value / sum(value) * 100)
+  names(data) = c(original, "Freq", "Percentage")
+  
+  # Add the total number of observables at the top of the bars
+  table$Total = rowSums(table[,-1])
+  table$Position = rep(105,nrow(table))
+  
+  p = ggplot(data, aes_q(x=as.name(names(data)[1]), 
+                         y=as.name(names(data)[4]))) + 
+    geom_bar(stat="identity", aes_q(fill=as.name(names(data)[2]))) +
+    geom_text(data=table, aes(x=Group, y=Position, label=Total), size=4) +
+    theme_bw()
+  
+}
+
+#' Calculate the contingency table of a set of data predictions.
+#' 
+#' @param data two columns, variable 1 and variable 2 values
+#' @return ggplot2 object
+toContingencyTable = function(data) {
+  
 }

@@ -12,7 +12,7 @@ However, the framework allows the easy extension of support for new applications
 The supported graphical visualisations are described here and the example figures are shown alongside.
 The graphs are divided into three main statistical topics: **distribution**, **correlation**, **classification**, **ranking**, **evolution** and **networks**.
 
-### Distribution
+### 1. Distribution
 
 The [Distribution.R](source/Distribution.R) source file contains functions to visualize data distributions, either continuous or discrete.
 
@@ -26,13 +26,13 @@ For discrete variables, the [GroupedMultiClassBarplot.R](scripts/GroupedMultiCla
 
 If there is a single group, the percentage and frequency of each class can be visualized as a Pie Chart (coming soon).
 
-### Correlation
+### 2. Correlation
 
 Coming soon...
   - Contingency Table
   - Correlation Plot
 
-### Classification
+### 3. Classification
 
 The [Classification](source/Classification.R) source file contains functions to visualize and analyze the performance of a classifier, which assigns a label (class) to each data point.
 
@@ -44,26 +44,26 @@ Coming soon...
   - Confusion Matrix Statistics
   - ROC Curve
 
-### Ranking
+### 4. Ranking
 
 [Ranking](source/Ranking.R)
 
 ![Precision-Recall Curve](figures/example3.svg)
   
-### Evolution
+### 5. Evolution
 
 [Evolution](source/Evolution.R)
 
 ![Evolution](figures/example4.svg)
 
   
-### Networks
+### 6. Networks
 
 Coming soon...
   - Cyclic Graph
   - Directed Acyclic Graph (DAG)
 
-### Usage
+## Usage
 Save the raw data file in the correct CSV format (`projectname.csv`) in the **data** folder. 
 Run the appropiate script from the command line by typing:
 
@@ -85,7 +85,7 @@ The script does not delete any of the files in the **data** folder, so the raw d
 ./ClearProject.sh example*  # This will delete all example projects at once
 ```
 
-### Dependencies
+## Dependencies
 - **R** version `3.0.2` or higher.
 - Packages: 
   - `ggplot2`

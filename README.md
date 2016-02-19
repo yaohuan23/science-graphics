@@ -18,11 +18,11 @@ The [Distribution.R](source/Distribution.R) source file contains functions to vi
 
 For a set of continuous variables in the same units, the [MultiVariateDistribution.R](scripts/MultiVariateDistribution.R) script plots them together as a density line with their underlying histogram slightly transparent.
 
-![Multivariate Histogram and Density](figures/example1.svg)
+![Multivariate Histogram and Density](figures/example1.pdf)
 
 For discrete variables, the [GroupedMultiClassBarplot.R](scripts/GroupedMultiClassBarplot.R) represents the percentage or frequency of each class for each of the groups as a barplot.
 
-![Grouped Multiclass Barplot](figures/example5.svg)
+![Grouped Multiclass Barplot](figures/example5.pdf)
 
 If there is a single group, the percentage and frequency of each class can be visualized as a Pie Chart (coming soon).
 
@@ -38,7 +38,7 @@ The [Classification](source/Classification.R) source file contains functions to 
 
 The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). The script [ConfusionMatrix.R](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class given the actual class and prints to it the total number of predictions (the matrix entry) only if it is different than 0.
 
-![Confusion Matrix](figures/example2.svg)
+![Confusion Matrix](figures/example2.pdf)
 
 Coming soon...
   - Confusion Matrix Statistics
@@ -48,13 +48,13 @@ Coming soon...
 
 [Ranking](source/Ranking.R)
 
-![Precision-Recall Curve](figures/example3.svg)
+![Precision-Recall Curve](figures/example3.pdf)
   
 ### 5. Evolution
 
 [Evolution](source/Evolution.R)
 
-![Evolution](figures/example4.svg)
+![Evolution](figures/example4.pdf)
 
   
 ### 6. Networks

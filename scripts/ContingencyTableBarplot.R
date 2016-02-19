@@ -7,26 +7,35 @@
 
 # Import all the source files needed
 source("../source/InputOutput.R")
-source("../source/Distribution.R")
+source("../source/Correlation.R")
 
 # Default input parameters
 project = "example5"
+valueType = "Percentage"
+position = "stack"
 
-cat("##### GROUPED MULTICLASS BARPLOT #####\n")
+cat("##### CONTINGENCY TABLE BARPLOT #####\n")
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
   cat(paste("No argument given.\n"))
+} else if (length(args)==1) {
+  project = args[1]
+} else if (length(args)==2) {
+  project = args[1]
+  valueType = args[2]
 } else {
   project = args[1]
+  valueType = args[2]
+  position = args[3]
 }
-cat(paste("Using arguments:", project, "\n"))
+cat(paste("Using arguments:", project, valueType, position, "\n"))
 
 data = parseFile(project)
 if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
-p = stackedBarplot(data)
+p = plotContingencyTableBar(data, valueType, position)
 saveFigure(project, p)

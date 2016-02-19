@@ -17,11 +17,17 @@ writeResult <- function(project, table) {
             row.names=FALSE, quote=FALSE)
 }
 
-#' Save a plot as a PDF in the figures folder
+#' Save a plot as a PDF and SVG in the figures folder.
+#' 
 #' @param project name
 #' @param plot the figure object
 saveFigure <- function(project, plot) {
+  # PDF plot
   pdf(paste("../figures/", project, ".pdf", sep=""))
+  print(plot)
+  dev.off()
+  # SVG plot
+  svg(paste("../figures/", project, ".svg", sep=""))
   print(plot)
   dev.off()
 }

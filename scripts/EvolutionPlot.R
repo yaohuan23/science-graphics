@@ -9,6 +9,8 @@
 source("../source/InputOutput.R")
 source("../source/Evolution.R")
 
+library(grid)
+
 # Project name
 project = "example4"
 
@@ -22,9 +24,11 @@ if (length(args)==0){
 
 data = parseFile(project)
 
-# Save procedure is different since it is not a ggplot
+# Saving procedure is different since it is a grob object
 pdf(paste("../figures/", project, ".pdf", sep=""))
-
 p = multipleEvolutionPlot(data)
+dev.off()
 
+svg(paste("../figures/", project, ".svg", sep=""))
+grid.draw(p)
 dev.off()

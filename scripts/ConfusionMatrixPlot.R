@@ -1,9 +1,8 @@
 #!/usr/bin/env Rscript
 # Calculate and plot a confusion matrix of a multiple class classifier
 # result. 
-# The format of the input has to be in two columns: Actual and 
-# Prediction, respectively.
-# An additional Name column can be optionally given in the first column,
+# The format of the input is in two columns, actual and predicted class.
+# An additional name column can be optionally given in the first column,
 # but it will be ignored.
 # Aleix Lafita - 01.2016
 
@@ -11,11 +10,11 @@
 source("../source/InputOutput.R")
 source("../source/Classification.R")
 
-# Default inputs
+# Default input parameters
 project = "example2"
 labelSize = 4
 
-cat("##### CONFUSION MATRIX PLOT #####")
+cat("##### CONFUSION MATRIX PLOT #####\n")
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)

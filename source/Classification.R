@@ -64,8 +64,9 @@ plotConfusionMatrix <- function(matrix, labelSize = 4) {
 }
 
 #' Create a confusion matrix from a set of predictions of a classifier.
+#' The factor levels of Actual and Prediction are enforced to be equal.
 #' 
-#' @param data list of predictions in two columns (truth, prediction)
+#' @param data set of predictions in two columns: actual and prediction.
 #' @return cofusion matrix
 toConfusionMatrix <- function(data) {
   
@@ -81,22 +82,5 @@ toConfusionMatrix <- function(data) {
   data$Prediction <- factor(data$Prediction, levels = classes)
   
   confusion(data, vars = names(data))
-  
-}
-
-#' Create a confusion matrix from a set of predictions of a classifier.
-#' 
-#' @param data list of predictions in two columns (truth, prediction)
-#' @return cofusion matrix in data frame
-toConfusionMatrixDeprecated <- function(data) {
-  
-  # Ensure propper names of the data and all factors
-  names(data) = c("Actual", "Prediction")
-  data$Actual = factor(data$Actual)
-  data$Prediction = factor(data$Prediction)
-  
-  # Transform the raw data into a classification table
-  data$Count = rep(1,nrow(data)) # add new column of ones
-  table = dcast(data, Actual ~ Prediction, sum, value.var="Count")
   
 }

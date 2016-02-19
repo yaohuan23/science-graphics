@@ -13,7 +13,7 @@ library(gridExtra)
 #' 
 #' @param data frame with multiple variables in evolution
 #' @return a grob object
-multipleEvolutionPlot <- function(data) {
+multipleEvolutionPlot = function(data) {
   
   plots = vector("list", ncol(data)-2)
   for (i in 3:ncol(data)) {
@@ -47,10 +47,11 @@ multipleEvolutionPlot <- function(data) {
 #' 
 #' @param data frame with {Name,Step,Value}
 #' @return a ggplot object
-singleEvolutionPlot <- function(data) {
+singleEvolutionPlot = function(data) {
   
   p = ggplot(data, aes_q(x=as.name(names(data)[2]), y=as.name(names(data)[3]), 
-                         color=as.name(names(data)[1]))) + 
-               geom_line() + geom_point() + theme_bw() #+ scale_x_discrete()
+                         color=as.name(names(data)[1]))) + geom_line() + 
+    #geom_point() + scale_x_discrete() + 
+    theme_bw()
     
 }

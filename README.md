@@ -10,10 +10,15 @@ Note that each script (which generates a single figure and an optional text outp
 Some of the supported applications are:
 - [Distribution](source/Distribution.R)
   - [Multivariate Histogram and Density](figures/example1.pdf)
-  - Grouped Multivariate Barplot
+  - [Grouped Multiclass Barplot](figures/example5.pdf)
   - Pie Chart
+- Correlation
+  - Contingency Table
+  - Correlation Plot
 - [Classification](source/Classification.R)
   - ![Confusion Matrix](figures/example2.pdf)
+  - Confusion Matrix Statistics Barplot
+  - ROC Curve
 - [Ranking](source/Ranking.R)
   - ![Precision-Recall Curve](figures/example3.pdf)
 - [Evolution](source/Evolution.R)

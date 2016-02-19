@@ -1,29 +1,65 @@
-# Science-Graphics
-Collection of R scripts to generate common science figures.
+#Science-Graphics
+Collection of R scripts to generate common science figures directly from the Linux command line.
 
-### Goal
-The purpose of this repository is to provide nicely formatted figures by DEFAULT directly from raw data files obtained from algorithms or programs, so that the pipeline from calculations to publication visualizations is automatized. 
+## Goal
+The purpose of this repository is to provide **nicely formatted figures** in R directly from **raw data files** obtained from algorithms or programs by simply running a single **command line** in the Linux shell. 
+The main purpose is to automate the pipeline from data mining calculations to publication visualizations.
 
-Note that each script (which generates a single figure and an optional text output) is very specific for a single type of analysis, so the scope of the repository is limited. However, the framework allows the easy extension of support for new applications.
+Note that each script (which generates a single figure and an optional text output) is very specific for a single type of analysis, so the scope of the repository is limited. 
+However, the framework allows the easy extension of support for new applications.
 
-### Applications
-Some of the supported applications are:
-- [Distribution](source/Distribution.R)
-  - [Multivariate Histogram and Density](figures/example1.pdf)
-  - [Grouped Multiclass Barplot](figures/example5.pdf)
-  - Pie Chart
-- Correlation
+## Supported Graphs
+The supported graphical visualisations are described here and the example figures are shown alongside.
+The graphs are divided into three main statistical topics: **distribution**, **correlation**, **classification**, **ranking**, **evolution** and **networks**.
+
+### Distribution
+
+The [Distribution.R](source/Distribution.R) source file contains functions to visualize data distributions, either continuous or discrete.
+
+For a set of continuous variables in the same units, the [MultiVariateDistribution.R](scripts/MultiVariateDistribution.R) script plots them together as a density line with their underlying histogram slightly transparent.
+
+![Multivariate Histogram and Density](figures/example1.svg)
+
+For discrete variables, the [GroupedMultiClassBarplot.R](scripts/GroupedMultiClassBarplot.R) represents the percentage or frequency of each class for each of the groups as a barplot.
+
+![Grouped Multiclass Barplot](figures/example5.svg)
+
+If there is a single group, the percentage and frequency of each class can be visualized as a Pie Chart (coming soon).
+
+### Correlation
+
+Coming soon...
   - Contingency Table
   - Correlation Plot
-- [Classification](source/Classification.R)
-  - ![Confusion Matrix](figures/example2.pdf)
-  - Confusion Matrix Statistics Barplot
+
+### Classification
+
+The [Classification](source/Classification.R) source file contains functions to visualize and analyze the performance of a classifier, which assigns a label (class) to each data point.
+
+The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). The script [ConfusionMatrix.R](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class given the actual class and prints to it the total number of predictions (the matrix entry) only if it is different than 0.
+
+![Confusion Matrix](figures/example2.svg)
+
+Coming soon...
+  - Confusion Matrix Statistics
   - ROC Curve
-- [Ranking](source/Ranking.R)
-  - ![Precision-Recall Curve](figures/example3.pdf)
-- [Evolution](source/Evolution.R)
-  - [Multitype Multivariate Evolution](figures/example4.pdf)
-- Network
+
+### Ranking
+
+[Ranking](source/Ranking.R)
+
+![Precision-Recall Curve](figures/example3.svg)
+  
+### Evolution
+
+[Evolution](source/Evolution.R)
+
+![Evolution](figures/example4.svg)
+
+  
+### Networks
+
+Coming soon...
   - Cyclic Graph
   - Directed Acyclic Graph (DAG)
 

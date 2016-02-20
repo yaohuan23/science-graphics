@@ -14,31 +14,30 @@ The graphs are divided into three main statistical topics: **distribution**, **c
 
 ### 1. Distribution
 
-The [Distribution.R](source/Distribution.R) source file contains functions to visualize data distributions, either continuous or discrete.
+The [Distribution](source/Distribution.R) source file contains functions to visualize continuos and discrete **data distributions**.
 
-For a set of continuous variables in the same units, the [MultiVariateDistribution.R](scripts/MultiVariateDistribution.R) script plots them together as a density line with their underlying histogram slightly transparent.
+For a set of continuous variables in the same units, the [MultiVariateDistribution.R](scripts/MultiVariateDistribution.R) script plots their density line together with the underlying histogram slightly transparent in the same figure. 
+An example figure can be found [here](figures/example1.pdf).
 
-![Multivariate Histogram and Density](figures/example1.pdf)
-
-For discrete variables, the [GroupedMultiClassBarplot.R](scripts/GroupedMultiClassBarplot.R) represents the percentage or frequency of each class for each of the groups as a barplot.
-
-![Grouped Multiclass Barplot](figures/example5.pdf)
-
-If there is a single group, the percentage and frequency of each class can be visualized as a Pie Chart (coming soon).
+For a discrete variable, the percentage and frequency of each class can be visualized as a Pie Chart (coming soon).
 
 ### 2. Correlation
 
+The [Correlation](source/Correlation.R) source file contains functions to calculate and visualize the **contingency table** of two discrete variables combination counts and visualize the correlation of continuous variables in multidimensional plots.
+
+For discrete variables, the [ContingencyTableBarplot](scripts/ContingencyTableBarplot.R) represents the percentage or frequency of each class combination from two variables as a barplot.
+An example figure can be found [here](figures/example5.pdf).
+
 Coming soon...
-  - Contingency Table
-  - Correlation Plot
+  - Correlation Distribution Plot
 
 ### 3. Classification
 
-The [Classification](source/Classification.R) source file contains functions to visualize and analyze the performance of a classifier, which assigns a label (class) to each data point.
+The [Classification](source/Classification.R) source file contains functions to visualize and evaluate the performance of a **classifier**, which assigns a class (label) to query data points.
 
-The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). The script [ConfusionMatrix.R](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class given the actual class and prints to it the total number of predictions (the matrix entry) only if it is different than 0.
-
-![Confusion Matrix](figures/example2.pdf)
+The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). 
+The script [ConfusionMatrix](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class and prints the total number of predictions (the matrix entry) only if it is different than 0.
+An example figure can be found [here](figures/example2.pdf).
 
 Coming soon...
   - Confusion Matrix Statistics
@@ -46,16 +45,20 @@ Coming soon...
 
 ### 4. Ranking
 
-[Ranking](source/Ranking.R)
+The [Ranking](source/Ranking.R) source file contains functions to visualize and evaluate the performance of a **ranking algorithm**.
+The results must have a **relevance score**, which can be binary (0 is non-relevant, 1 is relevant), discrete (e.g, scale of relevance from 1 to 5, 5 being the most relevant) or continuous (e.g, relevance score between 0 and 1).
+The ranking algorithm returns an input set sorted by relevance, where most relevant relevant inputs are at the top (beginning).
+Given the position of each input in the resulting sorted set and its relevance score, the performance of the algorithm is determined. 
 
-![Precision-Recall Curve](figures/example3.pdf)
+For binary relevance scores, the [PrecisionRecallCurve](scripts/PrecisionRecallCurve.R) script plots the precision in function of the recall, what is called PR curve.
+An example figure can be found [here](figures/example3.pdf).
   
 ### 5. Evolution
 
-[Evolution](source/Evolution.R)
+The [Evolution](source/Evolution.R) source file contains functions to visualize variable fluctuations and evolution in function of time (ODEs), step (MC simulations) or other independent variables.
 
-![Evolution](figures/example4.pdf)
-
+The [EvolutionPlot](scripts/EvolutionPlot.R) script accepts as an input multiple variables (in different units) and multiple runs (or instances) and arranges them in a multiplot.
+An example figure can be found [here](figures/example4.pdf).
   
 ### 6. Networks
 
@@ -64,25 +67,27 @@ Coming soon...
   - Directed Acyclic Graph (DAG)
 
 ## Usage
-Save the raw data file in the correct CSV format (`projectname.csv`) in the **data** folder. 
-Run the appropiate script from the command line by typing:
+Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.
+If your data file is not in the correct format, you can use some of the scripts in the **helper** folder to convert them.
+Change to the scripts directory and run the desired script from the command line by typing:
 
 ```bash
-./Path/To/Script.R projectname  # the name of the project is without any extension
-./ConfusionMatrixPlot.R example2
+cd /path/to/science-graphics/scripts
+./Script projectname [args] # the name of the project without extension, optional arguments
+./ConfusionMatrixPlot.R example2 5
 ```
 
-The created figures will be stored in the **figures** folder, in PDF format, as `projectname.pdf`.
-Any created text result output will be stored in the **results** folder, in CSV format, as `projectname.csv`.
+The generated figures will be stored in the **figures** folder, in PDF and SVG formats, as `projectname.pdf` and `projectname.svg`.
+Any generated text results (statistics, summary, etc) will be stored in the **results** folder, in CSV format, as `projectname_*.csv`.
 
-To clear all the generated files for one project (or a subset) you can use the [ClearProject](scripts/ClearProject.sh) script. 
-It will delete any file in the **figures** and **results** folder matching the input name.
+To clear all the generated files for one project (or a subset) you can use the [ClearProject](scripts/ClearProject.sh) script in the **helper** folder.
+It will delete all files in the **figures** and **results** folder matching the project name.
 The script does not delete any of the files in the **data** folder, so the raw data will be conserved.
 
 ```bash
 ./ClearProject.sh projectname
-./ClearProject.sh example1  # This delete figures and results of example1
-./ClearProject.sh example*  # This will delete all example projects at once
+./ClearProject.sh example1  # This deletes figures and results of example1
+./ClearProject.sh example*  # This deletes all example projects at once
 ```
 
 ## Dependencies
@@ -90,6 +95,7 @@ The script does not delete any of the files in the **data** folder, so the raw d
 - Packages: 
   - `ggplot2`
   - `gridExtra`
+  - `grid`
   - `reshape2`
   - `plyr`
   - `mlearning`

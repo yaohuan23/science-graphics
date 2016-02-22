@@ -45,7 +45,7 @@ plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
 
 }
 
-#' Plot the class frequency as a Pie Chart.
+#' Plot each class frequency as a Pie Chart.
 #' 
 #' @param data one column with class instances
 #' @return ggplot2 object

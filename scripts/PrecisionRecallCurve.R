@@ -9,6 +9,8 @@
 source("../source/InputOutput.R")
 source("../source/Ranking.R")
 
+printSGheader("Precision-Recall Curve")
+
 # Project name
 project = "example3"
 

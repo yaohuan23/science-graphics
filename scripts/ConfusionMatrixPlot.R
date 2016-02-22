@@ -4,7 +4,7 @@
 # The format of the input is in two columns, actual and predicted class.
 # An additional name column can be optionally given in the first column,
 # but it will be ignored.
-# Aleix Lafita - 01.2016
+# Aleix Lafita - 02.2016
 
 # Import all the source files needed
 source("../source/InputOutput.R")
@@ -14,7 +14,7 @@ source("../source/Classification.R")
 project = "example2"
 labelSize = 4
 
-cat("##### CONFUSION MATRIX PLOT #####\n")
+printSGheader("Confusion Matrix Plot")
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)

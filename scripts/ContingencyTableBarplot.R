@@ -6,20 +6,20 @@
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed
-source("../source/InputOutput.R")
+source("../source/ScienceGraphicsIO.R")
 source("../source/Correlation.R")
+
+printSGheader("Contingency Table Barplot")
 
 # Default input parameters
 project = "example5"
 valueType = "Percentage"
 position = "stack"
 
-cat("##### CONTINGENCY TABLE BARPLOT #####\n")
-
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
-  cat(paste("No argument given.\n"))
+  cat("No arguments given\n")
 } else if (length(args)==1) {
   project = args[1]
 } else if (length(args)==2) {

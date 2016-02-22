@@ -8,8 +8,9 @@
 # Import all the source files needed
 source("../source/InputOutput.R")
 source("../source/Evolution.R")
-
 library(grid)
+
+printSGheader("Evolution Plot")
 
 # Project name
 project = "example4"

@@ -16,7 +16,7 @@ binSize = 0
 minX = 0
 maxX = 0
 
-cat("##### MULTIVARIATE DISTRIBUTION PLOT #####\n")
+printSGheader("MultiVariate Distribution Plot")
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)

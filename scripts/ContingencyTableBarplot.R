@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
-# This script plots frequency of each class for each group.
-# The format of the input is in two columns, group name and class.
+# This script calculates and plots the contingency table as a barplot
+# from a collection of variable combinations.
+# The format of the input is in two columns, one for each variable.
 # An additional name column can be optionally given in the first column,
 # but it will be ignored.
 # Aleix Lafita - 02.2016

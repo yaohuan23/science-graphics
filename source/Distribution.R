@@ -51,4 +51,26 @@ plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
 #' @return ggplot2 object
 pieChart = function(data) {
   
+  data = toFrequencyTable(data)
+  
+  pie = ggplot(data, aes(x = "", y = Percentage)) + 
+    geom_bar(stat = "identity", width = 1, aes_q(fill=as.name(names(data)[1]))) +
+    coord_polar(theta = "y") +
+    theme_bw() + theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+  
+}
+
+#' Calculate the table of counts and percentages of each class 
+#' from a list of observations.
+#' 
+#' @param data one column with class instances
+#' @return table of counts (frequency table)
+toFrequencyTable = function(data) {
+  
+  original = names(data)
+  data = data.frame(table(data))
+  names(data) = c(original, "Frequency")
+  data$Percentage = data$Frequency * 100 / sum(data$Frequency)
+  return(data)
+  
 }

@@ -24,17 +24,26 @@ printSGheader = function(script) {
 #' @param project name
 #' @return data table from the file
 parseFile = function(project, args) {  
-  data <- read.csv(paste("../data/", project, ".csv", sep=""), 
+  data = read.csv(paste("../data/", project, ".csv", sep=""), 
                    header=TRUE, sep=",", stringsAsFactors=TRUE)
 }
 
-#' Write the data table to a CSV file in the results folder
+#' Write the data to a CSV file in the results folder
 #' @param project name
-#' @param table data table
-writeResult = function(project, table) {
+#' @param data matrix, frame or other format to write
+writeResult = function(project, data) {
   filename = paste("../results/", project, ".csv", sep="")
-  write.csv(table, filename, row.names=FALSE, quote=FALSE)
+  write.csv(data, filename, row.names=FALSE, quote=FALSE)
   cat(paste("Writing", project, "to results folder\n"))
+}
+
+#' Write the data to a CSV file in the data folder
+#' @param project name
+#' @param data matrix, frame or other format to write
+writeData = function(project, data) {
+  filename = paste("../data/", project, ".csv", sep="")
+  write.csv(data, filename, row.names=FALSE, quote=FALSE)
+  cat(paste("Writing", project, "to data folder\n"))
 }
 
 #' Save a plot as a PDF and SVG in the figures folder.

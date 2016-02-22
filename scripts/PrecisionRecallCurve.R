@@ -17,10 +17,11 @@ project = "example3"
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0){
-  cat(paste("No argument given, using", project, "\n"))
+  cat(paste("No argument given\n"))
 } else {
   project = args[1]
 }
+cat(paste("Using arguments:", project, "\n"))
 
 data = parseFile(project)
 

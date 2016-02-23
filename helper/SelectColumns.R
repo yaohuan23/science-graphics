@@ -21,9 +21,9 @@ cat(paste("Using arguments:", project, paste(names, collapse=" "), "\n"))
 
 data = parseFile(project)
 
-if (length(names) < ncol(data)) {
+if (length(names) <= ncol(data)) {
   data = data[names]
-  writeData(paste(project, "subset", sep="_"), data)
+  writeData(paste(project, paste(names, collapse="_"), sep="_"), data)
 } else {
-  cat("ERROR: Input names do not match data columns\n")
+  cat("ERROR: More input names than data columns\n")
 }

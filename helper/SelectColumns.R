@@ -23,7 +23,9 @@ data = parseFile(project)
 
 if (length(names) <= ncol(data)) {
   data = data[names]
-  writeData(paste(project, paste(names, collapse="_"), sep="_"), data)
+  filename = paste(project, paste(names, collapse="_"), sep="_")
+  filename = gsub('[ .,]', '-', filename)
+  writeData(filename, data)
 } else {
   cat("ERROR: More input names than data columns\n")
 }

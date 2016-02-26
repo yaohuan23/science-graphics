@@ -36,4 +36,10 @@ for (i in 1:length(projects)) {
   }
 }
 
-writeData(paste(projects[1], paste(factors, collapse="_"), sep="_"), result)
+# Put factor to the second column (move from last to second)
+result = result[, c(1, ncol(result), (3:ncol(result)-1))]
+
+# Remove special characters from the filename
+filename = paste("combined", paste(factors, collapse="_"), sep="_")
+filename = gsub('[ .,],', '', filename)
+writeData(filename, result)

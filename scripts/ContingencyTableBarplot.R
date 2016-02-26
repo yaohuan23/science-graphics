@@ -15,7 +15,7 @@ printSGheader("Contingency Table Barplot")
 # Default input parameters
 project = "example5"
 valueType = "Percentage"
-position = "stack"
+pos = "dodge"
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)
@@ -29,14 +29,14 @@ if (length(args)==0) {
 } else {
   project = args[1]
   valueType = args[2]
-  position = args[3]
+  pos = args[3]
 }
-cat(paste("Using arguments:", project, valueType, position, "\n"))
+cat(paste("Using arguments:", project, valueType, pos, "\n"))
 
 data = parseFile(project)
 if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
-p = plotContingencyTableBar(data, valueType, position)
+p = plotContingencyTableBar(data, valueType, pos)
 saveFigure(project, p)

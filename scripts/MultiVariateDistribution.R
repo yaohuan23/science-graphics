@@ -2,8 +2,8 @@
 # This script plots the distribution of multiple variables of the same units.
 # The density and underlying histogram of each variable are shown.
 # The format of the input is in two columns, variable name and value.
-# An additional name column can be optionally given in the first column,
-# but it will be ignored.
+# An additional name can be optionally given in the first column, but it will
+# be ignored.
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed

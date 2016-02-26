@@ -7,19 +7,22 @@ library(ggplot2)
 #' underlying histogram.
 #' The histogram is scaled to the density scale.
 #' 
-#' @param data two columns, variable name and value
-#' @param bin bin size to use, 0 is default to min(range/(points/(5*variables)),30)
+#' @param data two columns, variable name (factor) and value (continuous)
+#' @param bin size to use, default to min(range/(points/(variables)),30)
 #' @param xmin minimum value of the variable range
 #' @param xmax maximum value of the variable range
 #' @return ggplot2 object
 plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
+  
+  # Ensure that first column is a factor
+  data[,1] = as.factor(data[,1])
   
   # Default bin size calculation
   if (bin == 0){
     type = data
     names(type) = c("Type", "Value")
     levels = nlevels(type$Type)
-    bins = as.integer(nrow(data)/(1*levels))
+    bins = as.integer(nrow(data)/(levels))
     range = xmax - xmin
     if (range == 0) {
       maxmin = range(data[2])
@@ -38,9 +41,10 @@ plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
     geom_line(stat="density") +
     theme_bw()
   
-  if (xmin < xmax) {
+  # Axis modification regarding parameters
+  if (xmin < xmax)
     p = p + xlim(xmin, xmax)
-  }                  
+  
   return(p)
 
 }

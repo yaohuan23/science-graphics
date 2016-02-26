@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
-# This script plots the distribution of multiple variables of the same units.
+# This script plots the density distribution of multiple variables.
 # The density and underlying histogram of each variable are shown.
 # The format of the input is in two columns, variable name and value.
-# An additional name can be optionally given in the first column, but it will
-# be ignored.
+# An additional name can be optionally given in the first column, but 
+# it will be ignored.
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed
@@ -16,7 +16,7 @@ binSize = 0
 minX = 0
 maxX = 0
 
-printSGheader("MultiVariate Distribution Plot")
+printSGheader("Histogram Density Plot")
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)
@@ -32,7 +32,7 @@ if (length(args)==0) {
   binSize = as.double(args[2])
   minX = as.double(args[3])
   maxX = minX
-} else if (length(args)==4) {
+} else {
   project = args[1]
   binSize = as.double(args[2])
   minX = as.double(args[3])

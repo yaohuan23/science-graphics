@@ -7,10 +7,10 @@ library(ggplot2)
 #' underlying histogram.
 #' The histogram is scaled to the density scale.
 #' 
-#' @param data two columns, variable name (factor) and value (continuous)
+#' @param data two columns, variable name (factor) and value
 #' @param bin size to use, default to min(range/(points/(variables)),30)
-#' @param xmin minimum value of the variable range
-#' @param xmax maximum value of the variable range
+#' @param xmin minimum value of the value range
+#' @param xmax maximum value of the value range
 #' @return ggplot2 object
 plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
   
@@ -42,8 +42,15 @@ plotHistogramDensity = function(data, bin=0, xmin=0, xmax=0) {
     theme_bw()
   
   # Axis modification regarding parameters
-  if (xmin < xmax)
+  if (xmin != 0) {
+    if (xmin >= xmax)
+      xmax = max(data[2])
     p = p + xlim(xmin, xmax)
+  } else if (xmax != 0) {
+    if (xmin >= xmax)
+      xmin = min(data[2])
+    p = p + xlim(xmin, xmax)
+  }
   
   return(p)
 
@@ -77,4 +84,23 @@ toFrequencyTable = function(data) {
   data$Percentage = data$Frequency * 100 / sum(data$Frequency)
   return(data)
   
+}
+
+#' Plot the data distribution of the variables as a violin plot with
+#' an underlying box plot and a point in the median.
+#' 
+#' @param data two columns, variable name (factor) and value
+#' @return ggplot2 object
+violinBoxPlot = function(data) {
+  
+  # Ensure that first column is a factor
+  data[,1] = as.factor(data[,1])
+  
+  p = ggplot(data, aes_q(x=as.name(names(data)[1]),
+                         y=as.name(names(data)[2]))) +
+    geom_violin(trim=FALSE) + 
+    geom_boxplot(width=.1, fill="black", outlier.colour=NA) +
+    stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=2.5) +
+    theme_bw()
+    
 }

@@ -1,0 +1,10 @@
+From,To,Weight
+A,B,2
+C,F,4
+A,F,1
+B,A,5
+D,F,3
+E,B,2
+A,C,1
+E,D,4
+A,D,3

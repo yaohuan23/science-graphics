@@ -78,7 +78,7 @@ toFrequencyTable = function(data) {
 }
 
 #' Plot the data distribution of the variables as a violin plot with
-#' an underlying box plot and a point in the median.
+#' an underlying box plot and a point in the mean.
 #' 
 #' @param data two columns, variable name (factor) and value
 #' @param max maximum value of the range
@@ -100,14 +100,15 @@ violinBoxPlot = function(data, max=NA, min=NA, scale="width") {
                          y=as.name(names(data)[2]))) +
     geom_violin(scale=scale, trim=FALSE) + 
     geom_boxplot(width=.1, fill="black", outlier.colour=NA) +
-    stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=2.5) +
+    stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=3) +
+    stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
     coord_cartesian(ylim = c(min, max)) +
     theme_bw()
     
 }
 
 #' Plot the data distribution of the variables as a box plot with
-#' a point in the median.
+#' a point in the mean.
 #' 
 #' @param data two columns, variable name (factor) and value
 #' @param max maximum value of the range
@@ -127,7 +128,7 @@ simpleBoxPlot = function(data, max=NA, min=NA) {
   p = ggplot(data, aes_q(x=as.name(names(data)[1]),
                          y=as.name(names(data)[2]))) +
     geom_boxplot() +
-    stat_summary(fun.y=median, geom="point", fill="white", shape=23, size=3) +
+    stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
     coord_cartesian(ylim = c(min, max)) +
     theme_bw()
   

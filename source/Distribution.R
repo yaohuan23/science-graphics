@@ -77,6 +77,23 @@ toFrequencyTable = function(data) {
   
 }
 
+#' Calculate the distribution statistics of a dataset clustered
+#' by factor.
+#' 
+#' @param data two columns: group and value
+#' @return stats distribution statistics as data frame
+toDistributionStats = function(data) {
+  
+  copy = data
+  names(copy) = c("Group", "Value")
+  stats = aggregate(Value~Group, copy, mean)
+  stats$Variance = aggregate(Value~Group, copy, var)$Value
+  stats$STD = sqrt(stats$Variance)
+  names(stats) = c(names(data)[1], "Mean", "Variance", "STD")
+  return(stats)
+  
+}
+
 #' Plot the data distribution of the variables as a violin plot with
 #' an underlying box plot and a point in the mean.
 #' 

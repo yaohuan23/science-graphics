@@ -44,5 +44,9 @@ if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
+# Calculate and store statistics
+stats = toDistributionStats(data)
+writeResult(paste(project, "stats", sep="_"), stats)
+
 p = violinBoxPlot(data, ymin, ymax, scaling)
-saveFigure(project, p)
+saveFigure(paste(project, "violinplot", sep="_"), p)

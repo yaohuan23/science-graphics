@@ -11,7 +11,7 @@ source("../source/ScienceGraphicsIO.R")
 source("../source/Distribution.R")
 
 # Default input parameters
-project = "example8"
+project = "example7"
 ymin = NA
 ymax = NA
 
@@ -38,5 +38,9 @@ if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
+# Calculate and store statistics
+stats = toDistributionStats(data)
+writeResult(paste(project, "stats", sep="_"), stats)
+
 p = simpleBoxPlot(data, ymin, ymax)
-saveFigure(project, p)
+saveFigure(paste(project, "boxplot", sep="_"), p)

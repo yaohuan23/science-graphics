@@ -44,5 +44,9 @@ if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
+# Calculate and store statistics
+stats = toDistributionStats(data)
+writeResult(paste(project, "stats", sep="_"), stats)
+
 p = plotHistogramDensity(data, binSize, minX, maxX)
-saveFigure(project, p)
+saveFigure(paste(project, "density", sep="_"), p)

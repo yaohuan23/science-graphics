@@ -13,8 +13,8 @@ source("../source/Distribution.R")
 # Default input parameters
 project = "example1"
 binSize = 0
-minX = 0
-maxX = 0
+minX = NA
+maxX = NA
 
 printSGheader("Histogram Density Plot")
 
@@ -31,7 +31,6 @@ if (length(args)==0) {
   project = args[1]
   binSize = as.double(args[2])
   minX = as.double(args[3])
-  maxX = minX
 } else {
   project = args[1]
   binSize = as.double(args[2])

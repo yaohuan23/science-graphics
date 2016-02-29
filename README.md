@@ -14,18 +14,25 @@ The graphs are divided into three main statistical topics: **distribution**, **c
 
 ### 1. Distribution
 
-The [Distribution](source/Distribution.R) source file contains functions to visualize continuos and discrete **data distributions**.
+The [Distribution.R](source/Distribution.R) source file contains functions to visualize continuos and discrete **data distributions**.
 
-For a set of continuous variables in the same units, the [MultiVariateDistribution.R](scripts/MultiVariateDistribution.R) script plots their density line together with the underlying histogram slightly transparent in the same figure. 
-An example figure can be found [here](figures/example1.pdf).
+For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density line together with the underlying histogram slightly transparent in the same figure. 
+An example figure can be found [here](figures/example1_density.pdf).
 
-For a discrete variable, the percentage and frequency of each class can be visualized as a Pie Chart (coming soon).
+As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. The [BoxPlot.R](scripts/BoxPlot.R) script generates such a figure.
+An example figure can be found [here](figures/example8_boxplot.pdf).
+
+However, multimodal properties of the distribution cannot be observed in a simple box plot, and a violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
+An example figure can be found [here](figures/example8_violinplot.pdf).
+
+For discrete variables, the percentage and frequency of each class can be visualized using the [PieChart.R](scripts/PieChart.R) script.
+An example figure can be found [here](figures/example6.pdf).
 
 ### 2. Correlation
 
-The [Correlation](source/Correlation.R) source file contains functions to calculate and visualize the **contingency table** of two discrete variables combination counts and visualize the correlation of continuous variables in multidimensional plots.
+The [Correlation.R](source/Correlation.R) source file contains functions to calculate and visualize the **contingency table** of two discrete variables combination counts and visualize the correlation of continuous variables in multidimensional plots.
 
-For discrete variables, the [ContingencyTableBarplot](scripts/ContingencyTableBarplot.R) represents the percentage or frequency of each class combination from two variables as a barplot.
+For discrete variables, the [ContingencyTableBarplot](scripts/ContingencyTableBarplot.R) plots the percentage or frequency of each class combination from two variables as a barplot.
 An example figure can be found [here](figures/example5.pdf).
 
 Coming soon...
@@ -33,7 +40,7 @@ Coming soon...
 
 ### 3. Classification
 
-The [Classification](source/Classification.R) source file contains functions to visualize and evaluate the performance of a **classifier**, which assigns a class (label) to query data points.
+The [Classification.R](source/Classification.R) source file contains functions to visualize and evaluate the performance of a **classifier**, which assigns a class (label) to query data points.
 
 The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). 
 The script [ConfusionMatrix](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class and prints the total number of predictions (the matrix entry) only if it is different than 0.
@@ -45,7 +52,7 @@ Coming soon...
 
 ### 4. Ranking
 
-The [Ranking](source/Ranking.R) source file contains functions to visualize and evaluate the performance of a **ranking algorithm**.
+The [Ranking.R](source/Ranking.R) source file contains functions to visualize and evaluate the performance of a **ranking algorithm**.
 The results must have a **relevance score**, which can be binary (0 is non-relevant, 1 is relevant), discrete (e.g, scale of relevance from 1 to 5, 5 being the most relevant) or continuous (e.g, relevance score between 0 and 1).
 The ranking algorithm returns an input set sorted by relevance, where most relevant relevant inputs are at the top (beginning).
 Given the position of each input in the resulting sorted set and its relevance score, the performance of the algorithm is determined. 
@@ -55,16 +62,17 @@ An example figure can be found [here](figures/example3.pdf).
   
 ### 5. Evolution
 
-The [Evolution](source/Evolution.R) source file contains functions to visualize variable fluctuations and evolution in function of time (ODEs), step (MC simulations) or other independent variables.
+The [Evolution.R](source/Evolution.R) source file contains functions to visualize variable fluctuations and evolution in function of time (ODEs), step (MC simulations) or other independent variables.
 
-The [EvolutionPlot](scripts/EvolutionPlot.R) script accepts as an input multiple variables (in different units) and multiple runs (or instances) and arranges them in a multiplot.
+The [EvolutionPlot.R](scripts/EvolutionPlot.R) script accepts as an input multiple variables (in different units) and multiple runs (or instances) and arranges them in a multiplot.
 An example figure can be found [here](figures/example4.pdf).
   
 ### 6. Networks
 
-Coming soon...
-  - Cyclic Graph
-  - Directed Acyclic Graph (DAG)
+The [Networks.R](source/Networks.R) source file contains functions to visualize graphs.
+
+For a simple graph with optional weighted edges the [NetworkGraph.R](scripts/NetworkGraph.R) script can be used.
+An example figure can be found [here](figures/example8.pdf).
 
 ## Usage
 Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.

@@ -20,22 +20,25 @@ For a set of continuous variables in the same units, the [HistogramDensityPlot.R
 An example figure can be found [here](figures/example1_density.pdf).
 
 As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. The [BoxPlot.R](scripts/BoxPlot.R) script generates such a figure.
-An example figure can be found [here](figures/example8_boxplot.pdf).
+An example figure can be found [here](figures/example7_boxplot.pdf).
 
 However, multimodal properties of the distribution cannot be observed in a simple box plot, and a violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
-An example figure can be found [here](figures/example8_violinplot.pdf).
+An example figure can be found [here](figures/example7_violinplot.pdf).
+
+The bash script [AllDistributions.R](scripts/AllDistributions.R) generates all three plots for continuous data distributions.
 
 For discrete variables, the percentage and frequency of each class can be visualized using the [PieChart.R](scripts/PieChart.R) script.
 An example figure can be found [here](figures/example6.pdf).
 
 ### 2. Correlation
 
-The [Correlation.R](source/Correlation.R) source file contains functions to calculate and visualize the **contingency table** of two discrete variables combination counts and visualize the correlation of continuous variables in multidimensional plots.
+The [Correlation.R](source/Correlation.R) source file contains functions to calculate and visualize the **contingency table** of two discrete variable counts and the correlation of continuous variables.
 
 For discrete variables, the [ContingencyTableBarplot](scripts/ContingencyTableBarplot.R) plots the percentage or frequency of each class combination from two variables as a barplot.
 An example figure can be found [here](figures/example5.pdf).
 
 Coming soon...
+  - Contingency Table Plot
   - Correlation Distribution Plot
 
 ### 3. Classification
@@ -71,7 +74,7 @@ An example figure can be found [here](figures/example4.pdf).
 
 The [Networks.R](source/Networks.R) source file contains functions to visualize graphs.
 
-For a simple graph with optional weighted edges the [NetworkGraph.R](scripts/NetworkGraph.R) script can be used.
+For a simple graph with optional weighted or labeled edges the [NetworkGraph.R](scripts/NetworkGraph.R) script can be used.
 An example figure can be found [here](figures/example8.pdf).
 
 ## Usage

@@ -25,7 +25,7 @@ An example figure can be found [here](figures/example7_boxplot.pdf).
 However, multimodal properties of the distribution cannot be observed in a simple box plot, and a violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
 An example figure can be found [here](figures/example7_violinplot.pdf).
 
-The bash script [AllDistributions.R](scripts/AllDistributions.R) generates all three plots for continuous data distributions.
+The bash script [AllDistributions.sh](scripts/AllDistributions.sh) generates all three plots for continuous data distributions.
 
 For discrete variables, the percentage and frequency of each class can be visualized using the [PieChart.R](scripts/PieChart.R) script.
 An example figure can be found [here](figures/example6.pdf).

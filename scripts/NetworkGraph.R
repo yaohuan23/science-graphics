@@ -26,12 +26,13 @@ if (length(args)==0){
 cat(paste("Using arguments:", project, dir, "\n"))
 
 data = parseFile(project)
+g = drawNetworkGraph(data, dir)
 
 # Saving procedure is different since it is not a ggplot
 pdf(paste("../figures/", project, ".pdf", sep=""))
-p = drawNetworkGraph(data, dir)
+plot(g)
 dev.off()
 
 svg(paste("../figures/", project, ".svg", sep=""))
-p = drawNetworkGraph(data, dir)
+plot(g)
 dev.off()

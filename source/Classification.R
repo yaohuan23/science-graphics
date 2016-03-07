@@ -5,6 +5,8 @@ library(ggplot2)
 library(reshape2)
 library(plyr)
 library(mlearning)
+library(ROCR)
+library(RColorBrewer)
 
 #' Plot the confusion matrix of a classifier with the actual class in the
 #' x axis and a stacked bar proportional to the predicted class fraction
@@ -13,7 +15,7 @@ library(mlearning)
 #' 
 #' @param confusion matrix
 #' @return a ggplot object
-plotConfusionMatrixBar <- function(matrix) {
+plotConfusionMatrixBar = function(matrix) {
   
   # Scale the data to 100%
   mtable = data.frame(matrix)
@@ -44,7 +46,7 @@ plotConfusionMatrixBar <- function(matrix) {
 #' @param confusion matrix
 #' @param labelSize size of the text labels for total values
 #' @return a ggplot object
-plotConfusionMatrix <- function(matrix, labelSize = 4) {
+plotConfusionMatrix = function(matrix, labelSize = 4) {
   
   confusion = data.frame(matrix)
   scaled = ddply(confusion, "Actual", transform,
@@ -68,7 +70,7 @@ plotConfusionMatrix <- function(matrix, labelSize = 4) {
 #' 
 #' @param data set of predictions in two columns: actual and prediction.
 #' @return cofusion matrix
-toConfusionMatrix <- function(data) {
+toConfusionMatrix = function(data) {
   
   # Ensure propper names of the data
   names(data) = c("Actual", "Prediction")
@@ -82,5 +84,36 @@ toConfusionMatrix <- function(data) {
   data$Prediction <- factor(data$Prediction, levels = classes)
   
   confusion(data, vars = names(data))
+  
+}
+
+#' Plot the ROC curve of a binary classifier based on a continuous score
+#' threshold.
+#' 
+#' @param data [Algorithm, Score, Relevance]
+plotROCurve = function(data) {
+  
+  scores = c(split(data[[2]], data[[1]]))
+  labels = c(split(data[[3]], data[[1]]))
+  
+  algorithms = as.character(levels(as.factor(data[[1]])))
+  colors = brewer.pal(max(length(algorithms),3), "Set1")
+  
+  pred <- prediction(scores, labels)
+  perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+  
+  plot(perf,
+       col=as.list(colors),
+       xaxs="i", yaxs="i",
+       xaxis.at=seq(0,1,.1),xaxis.labels=paste(seq(0,100,10),"%",sep=""),
+       yaxis.at=seq(0,1,.1),yaxis.labels=paste(seq(0,100,10),"%",sep=""),
+       yaxis.las=1,
+       lwd=2)
+  legend("bottomleft",
+         algorithms,
+         col=colors,
+         lwd=2,
+         cex=.9,
+         inset=c(.1,.05))
   
 }

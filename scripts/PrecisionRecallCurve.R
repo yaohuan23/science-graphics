@@ -6,7 +6,7 @@
 # Aleix Lafita - 01.2016
 
 # Import all the source files needed
-source("../source/InputOutput.R")
+source("../source/ScienceGraphicsIO.R")
 source("../source/Ranking.R")
 
 printSGheader("Precision-Recall Curve")

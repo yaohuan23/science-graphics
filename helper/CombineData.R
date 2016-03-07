@@ -40,6 +40,6 @@ for (i in 1:length(projects)) {
 result = result[, c(1, ncol(result), (3:ncol(result)-1))]
 
 # Remove special characters from the filename
-filename = paste("combined", paste(factors, collapse="_"), sep="_")
+filename = paste(projects[1], "combined", paste(factors, collapse="_"), sep="_")
 filename = gsub('[ .,],', '', filename)
 writeData(filename, result)

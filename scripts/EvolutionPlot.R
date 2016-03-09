@@ -14,21 +14,25 @@ printSGheader("Evolution Plot")
 
 # Project name
 project = "example4"
+ranges = c()
 
 # Parse args if executed from the cmd line
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0){
   cat(paste("No argument given\n"))
+} else if (length(args)==1) {
+  project = args[1]
 } else {
   project = args[1]
+  ranges = as.numeric(args[-1])
 }
-cat(paste("Using arguments:", project, "\n"))
+cat(paste("Using arguments:", project, paste(ranges, collapse=" "), "\n"))
 
 data = parseFile(project)
 
 # Saving procedure is different since it is a grob object
 pdf(paste("../figures/", project, ".pdf", sep=""))
-p = multipleEvolutionPlot(data)
+p = multipleEvolutionPlot(data, ranges)
 dev.off()
 
 svg(paste("../figures/", project, ".svg", sep=""))

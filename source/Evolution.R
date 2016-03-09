@@ -12,12 +12,29 @@ library(gridExtra)
 #' because they are assumed to be in different units.
 #' 
 #' @param data frame with multiple variables in evolution
+#' @param rangeXY1Y2 specify the ranges of X and Y axis
 #' @return a grob object
-multipleEvolutionPlot = function(data) {
+multipleEvolutionPlot = function(data, rangesXY1Y2 = c()) {
   
   plots = vector("list", ncol(data)-2)
+  
+  # Extract the x ranges
+  x0 = xm = NA
+  if (length(ranges) > 0)
+    x0 = ranges[1]
+  if (length(ranges) > 1)
+    xm = ranges[2]
+  
   for (i in 3:ncol(data)) {
-    p = singleEvolutionPlot(data[c(1,2,i)])
+    
+    # Extract y ranges if provided
+    y0 = ym = NA
+    if (length(ranges) > ((i-2)*2))
+      y0 = ranges[(i-2)*2+1]
+    if (length(ranges) > ((i-2)*2)+1)
+      ym = ranges[((i-1)*2)]
+    
+    p = singleEvolutionPlot(data[c(1,2,i)], x0, xm, y0, ym)
     
     # Remove xlabel and numbers except last
     if (i != ncol(data)) {
@@ -46,12 +63,33 @@ multipleEvolutionPlot = function(data) {
 #' of the variable. The lines will be colored by the first column.
 #' 
 #' @param data frame with {Name,Step,Value}
+#' @param xmin minimum x values in the plot
+#' @param xmax maximum x value in the plot
+#' @param ymin minimum y value in the plot
+#' @param ymax maximum y value in the plot
 #' @return a ggplot object
-singleEvolutionPlot = function(data) {
+singleEvolutionPlot = function(data, xmin=NA, xmax=NA, ymin=NA, ymax=NA) {
+  
+  # Ensure names as factors
+  data[[1]] = as.factor(data[[1]])
   
   p = ggplot(data, aes_q(x=as.name(names(data)[2]), y=as.name(names(data)[3]), 
                          color=as.name(names(data)[1]))) + geom_line() + 
     #geom_point() + scale_x_discrete() + 
     theme_bw()
-    
+  
+  # Set the limits according to the inputs
+  xlim = ylim = NA
+  if (!is.na(xmin) && !is.na(xmax)){
+    if (!is.na(ymin) && !is.na(ymax)){
+      p = p + coord_cartesian(xlim=c(xmin, xmax), ylim=c(ymin, ymax))
+    } else {
+      p = p + coord_cartesian(xlim=c(xmin, xmax))
+    }
+  } else if (!is.na(ymin) && !is.na(ymax)) {
+    p = p + coord_cartesian(ylim=c(ymin, ymax))
+  }
+  
+  return(p)
+  
 }

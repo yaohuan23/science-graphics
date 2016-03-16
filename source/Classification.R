@@ -91,7 +91,12 @@ toConfusionMatrix = function(data) {
 #' threshold.
 #' 
 #' @param data [Algorithm, Score, Relevance]
-plotROCurve = function(data) {
+#' @param xmin in percentage [0,100] %
+#' @param xmax in percentage [0,100] %
+#' @param ymin in percentage [0,100] %
+#' @param ymax in percentage [0,100] %
+#' @param thresholds
+plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=c()) {
   
   scores = c(split(data[[2]], data[[1]]))
   labels = c(split(data[[3]], data[[1]]))
@@ -105,9 +110,18 @@ plotROCurve = function(data) {
   plot(perf,
        col=as.list(colors),
        xaxs="i", yaxs="i",
-       xaxis.at=seq(0,1,.1),xaxis.labels=paste(seq(0,100,10),"%",sep=""),
-       yaxis.at=seq(0,1,.1),yaxis.labels=paste(seq(0,100,10),"%",sep=""),
+       xlim=c(xmin/100, xmax/100),
+       ylim=c(ymin/100, ymax/100),
+       xaxis.at=seq(xmin/100,xmax/100, (xmax-xmin)/1000),
+       xaxis.labels=paste(seq(xmin,xmax,(xmax-xmin)/10),"%",sep=""),
+       yaxis.at=seq(ymin/100,ymax/100, (ymax-ymin)/1000),
+       yaxis.labels=paste(seq(ymin,ymax,(ymax-ymin)/10),"%",sep=""),
        yaxis.las=1,
+       points.col=as.list(colors),
+       points.pch=20,
+       points.cex=2.0,
+       print.cutoffs.at=thresholds[1:length(thresholds)],
+       cutoff.label.function=function(x) { "" },
        lwd=2)
   legend("bottomleft",
          algorithms,

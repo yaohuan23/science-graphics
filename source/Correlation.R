@@ -56,11 +56,14 @@ plotContingencyTableBar = function(data, type="Percentage", position="dodge") {
 #' Plot the correlation of two continuous variables. 
 #' The points are colored by a specified factor.
 #' 
-#' @param data two columns, value pairs
+#' @param data factor and two columns for value pairs
 #' @param shape point shape
 #' @param size point size
 #' @return ggplot2 object
 plotCorrelation2D = function(data, shape, size) {
+  
+  # Ensure they are factors
+  data[[1]] = as.factor(data[[1]])
   
   p = ggplot(data, aes_q(x=as.name(names(data)[2]), 
                          y=as.name(names(data)[3]),

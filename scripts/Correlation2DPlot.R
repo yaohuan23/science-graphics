@@ -30,7 +30,7 @@ if (length(args)==0) {
   pointShape = as.character(args[2])
   pointSize = as.integer(args[3])
 } 
-cat(paste("Using arguments:", project, pointShape, pointShape, "\n"))
+cat(paste("Using arguments:", project, pointShape, pointSize, "\n"))
 
 data = parseFile(project)
 if (ncol(data) > 3){

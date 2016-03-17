@@ -62,9 +62,9 @@ if (ncol(data) > 3)
 
 # Saving procedure is different since it is not a ggplot object
 pdf(paste("../figures/", project, ".pdf", sep=""))
-p = plotROCurve(data, xn, xx, yn, yx, thres)
+p = plotROCurve(data, xn, xx, yn, yx, as.list(thres))
 dev.off()
 
 svg(paste("../figures/", project, ".svg", sep=""))
-p = plotROCurve(data, xn, xx, yn, yx, thres)
+p = plotROCurve(data, xn, xx, yn, yx, as.list(thres))
 dev.off()

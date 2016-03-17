@@ -96,7 +96,7 @@ toConfusionMatrix = function(data) {
 #' @param ymin in percentage [0,100] %
 #' @param ymax in percentage [0,100] %
 #' @param thresholds
-plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=c()) {
+plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=list()) {
   
   scores = c(split(data[[2]], data[[1]]))
   labels = c(split(data[[3]], data[[1]]))
@@ -123,7 +123,7 @@ plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=c())
        print.cutoffs.at=thresholds[1:length(thresholds)],
        cutoff.label.function=function(x) { "" },
        lwd=2)
-  legend("bottomleft",
+  legend("bottomright",
          algorithms,
          col=colors,
          lwd=2,

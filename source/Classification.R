@@ -131,3 +131,28 @@ plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=list
          inset=c(.1,.05))
   
 }
+
+#' Calculate the Cramer's V coefficient of a classifier.
+#' Code from: http://www.r-bloggers.com/example-8-39-calculating-cramers-v/
+#' 
+#' @param actual vector of actual (true) values
+#' @param prediction vector of prediction values
+#' @return cramer v coefficient as numeric
+cv.test = function(actual, prediction) {
+  
+  cv = sqrt(chisq.test(actual, prediction, correct=FALSE)$statistic / 
+         (length(actual) * (min(length(unique(actual)),
+                                length(unique(prediction))) - 1)))
+  
+}
+
+#' Calculate the Precision of a classifier.
+#' 
+#' @param data data frame with two columns: actual (true) and prediction
+#' @return precision as a numeric
+precision = function(data) {
+  
+  pr = length(which(as.character(data[[1]])==as.character(data[[2]]))) / 
+    nrow(data)
+  
+}

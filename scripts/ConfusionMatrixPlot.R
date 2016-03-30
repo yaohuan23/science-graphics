@@ -38,5 +38,11 @@ if (ncol(data) > 2){
 matrix = toConfusionMatrix(data)
 writeResult(paste(project, "_confusionMatrix", sep=""), matrix)
 
+# Calculate the Cramer V coefficient and precison
+cv = cv.test(data[[1]],data[[2]])
+pr = precision(data)
+cat(paste("##   Cramér V/Phi: ", cv, "\n"))
+cat(paste("##   Precision:    ", pr, "\n"))
+
 p = plotConfusionMatrix(matrix, labelSize)
 saveFigure(project, p)

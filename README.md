@@ -3,29 +3,47 @@ Collection of R scripts to generate common science figures directly from the Lin
 
 ## Goal
 The purpose of this repository is to provide **nicely formatted figures** in R directly from **raw data files** obtained from algorithms or programs by simply running a single **command line** in the Linux shell. 
-The main purpose is to automate the pipeline from data mining calculations to publication visualizations.
+The main purpose is to automate the pipeline from data mining calculations to **publication** visualizations.
 
 Note that each script (which generates a single figure and an optional text output) is very specific for a single type of analysis, so the scope of the repository is limited. 
 However, the framework allows the easy extension of support for new applications.
 
 ## Supported Graphs
-The supported graphical visualisations are described here and the example figures are shown alongside.
-The graphs are divided into three main statistical topics: **distribution**, **correlation**, **classification**, **ranking**, **evolution** and **networks**.
+The supported graphical visualisations are described here and example figures and input formats are shown alongside.
+The scripts are divided into six statistical topics: **distribution**, **correlation**, **classification**, **ranking**, **evolution** and **networks**.
 
-### 1. Distribution
+### 1 Distribution
 
 The [Distribution.R](source/Distribution.R) source file contains functions to visualize continuos and discrete **data distributions**.
 
-For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density line together with the underlying histogram slightly transparent in the same figure. 
+#### 1.1 Continuous Variable Distributions
+
+Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input format is shared for all of them, consisting of an optional **Name** column, a **Factor** variable column and a **Value** column (see the [example file](data/example7)).
+
+Name | Factor | Value |
+---|---|---|---
+point 1 | group 1 | 0.5 |
+point 2 | group 1 | 0.75 |
+point 3 | group 2 | 0.23 |
+... | ... | ... |
+
+The bash script [AllContinousDistributions.sh](scripts/AllContinuousDistributions.sh) generates all the available plots for continuous data distributions at once.
+
+##### 1.1.1 Histogram Density Plot
+
+For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density line together with the underlying histogram slightly transparent in the same figure. The histogram is scaled to the densisty line, so that all variables can be visualized in the same plot.
+
 An example figure can be found [here](figures/example1_density.pdf).
+
+##### 1.1.2 Box Plot
 
 As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. The [BoxPlot.R](scripts/BoxPlot.R) script generates such a figure.
 An example figure can be found [here](figures/example7_boxplot.pdf).
 
+##### 1.1.3 Violin Box Plot
+
 However, multimodal properties of the distribution cannot be observed in a simple box plot, and a violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
 An example figure can be found [here](figures/example7_violinplot.pdf).
-
-The bash script [AllDistributions.sh](scripts/AllDistributions.sh) generates all three plots for continuous data distributions.
 
 For discrete variables, the percentage and frequency of each class can be visualized using the [PieChart.R](scripts/PieChart.R) script.
 An example figure can be found [here](figures/example6.pdf).
@@ -111,3 +129,7 @@ The script does not delete any of the files in the **data** folder, so the raw d
   - `plyr`
   - `mlearning`
   - `igraph`
+
+## References
+
+Some of the plots have been taken from the book *R Graphics Cookbook*, written by Winston Chang and published by O'REILLY.

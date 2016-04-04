@@ -57,17 +57,17 @@ The shell script [AllContinousDistributions.sh](scripts/AllContinuousDistributio
 ##### 1.1.1. Histogram Density Plot
 For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density lines together with the underlying histograms slightly transparent in the same plot. The histogram is scaled to the densisty line.
 
-![figure](figures/example1_density.png).
+![figure](figures/example1_density.png)
 
 ##### 1.1.2. Box Plot
 As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. The [BoxPlot.R](scripts/BoxPlot.R) script generates such a figure.
 
-![figure](figures/example7_boxplot.png).
+![figure](figures/example7_boxplot.png)
 
 ##### 1.1.3. Violin Box Plot
 However, multimodal properties of the distribution cannot be observed in a simple box plot. A violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
 
-![figure](figures/example7_violinplot.png).
+![figure](figures/example7_violinplot.png)
 
 #### 1.2. Discrete Distributions
 Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each class (or label, or type) can be visualized.
@@ -79,7 +79,7 @@ Name | Class |
 ---|---|---
 Character | Factor |
 
-![figure](figures/example6.png).
+![figure](figures/example6.png)
 
 ##### 1.2.2. Bar Plot
 The bar plot allows the representation of multiple variables in the same figure. The [BarPlot.R](scripts/BarPlot.R) script takes as input an optional **Name** column, a **Group** variable column and a **Class** column (see the [example file](data/example5.csv)).
@@ -88,7 +88,7 @@ Name | Group | Class |
 ---|---|---|---
 Character | Factor | Factor |
 
-![figure](figures/example5.png).
+![figure](figures/example5.png)
 
 ### 2. Correlation
 
@@ -100,46 +100,50 @@ An example figure can be found [here](figures/example5.pdf).
 
 #### 2.2. Correlation 2D Plot
 
-
 Coming soon...
   - Contingency Table Plot
   - Correlation Distribution Plot
 
 ### 3. Classification
-
 The [Classification.R](source/Classification.R) source file contains functions to visualize and evaluate the performance of a **classifier**, which assigns a class (label) to query data points.
 
+#### 3.1. Confusion Matrix Plot
 The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). 
 The script [ConfusionMatrix](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class and prints the total number of predictions (the matrix entry) only if it is different than 0.
-An example figure can be found [here](figures/example2.pdf).
 
-Coming soon...
-  - Confusion Matrix Statistics
-  - ROC Curve
+![figure](figures/example2.png)
+
+#### 3.2. ROC Curve
+The [Receiver Operating Characteristic (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) curve is a graphical plot that illustrates the performance of a binary classifier system as its discrimination threshold is varied. The curve is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.
+
+![figure](figures/example10.png)
 
 ### 4. Ranking
-
 The [Ranking.R](source/Ranking.R) source file contains functions to visualize and evaluate the performance of a **ranking algorithm**.
 The results must have a **relevance score**, which can be binary (0 is non-relevant, 1 is relevant), discrete (e.g, scale of relevance from 1 to 5, 5 being the most relevant) or continuous (e.g, relevance score between 0 and 1).
 The ranking algorithm returns an input set sorted by relevance, where most relevant relevant inputs are at the top (beginning).
 Given the position of each input in the resulting sorted set and its relevance score, the performance of the algorithm is determined. 
 
+#### 4.1. Precision-Recall Curve
 For binary relevance scores, the [PrecisionRecallCurve](scripts/PrecisionRecallCurve.R) script plots the precision in function of the recall, what is called PR curve.
-An example figure can be found [here](figures/example3.pdf).
+
+[figure](figures/example3.png)
   
 ### 5. Evolution
-
 The [Evolution.R](source/Evolution.R) source file contains functions to visualize variable fluctuations and evolution in function of time (ODEs), step (MC simulations) or other independent variables.
 
+#### 5.1. Evolution Plot
 The [EvolutionPlot.R](scripts/EvolutionPlot.R) script accepts as an input multiple variables (in different units) and multiple runs (or instances) and arranges them in a multiplot.
-An example figure can be found [here](figures/example4.pdf).
+
+![figure](figures/example4.png)
   
 ### 6. Networks
-
 The [Networks.R](source/Networks.R) source file contains functions to visualize graphs.
 
+#### 6.1. Network Graph
 For a simple graph with optional weighted or labeled edges the [NetworkGraph.R](scripts/NetworkGraph.R) script can be used.
-An example figure can be found [here](figures/example8.pdf).
+
+![figure](figures/example8.png)
 
 ## Dependencies
 - **R** version `3.0.2` or higher.

@@ -8,52 +8,99 @@ The main purpose is to automate the pipeline from data mining calculations to **
 Note that each script (which generates a single figure and an optional text output) is very specific for a single type of analysis, so the scope of the repository is limited. 
 However, the framework allows the easy extension of support for new applications.
 
+## Usage
+Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.
+If your data file is not in the correct format, you can use some of the scripts in the **helper** folder to convert them.
+Change to the scripts directory and run the desired script from the command line by typing:
+
+```bash
+cd /path/to/science-graphics/scripts
+./Script projectname [args] # the name of the project without extension, optional arguments
+./ConfusionMatrixPlot.R example2 5
+```
+
+The generated figures will be stored in the **figures** folder, in PDF and SVG formats, as `projectname.pdf` and `projectname.svg`.
+Any generated text results (statistics, summary, etc) will be stored in the **results** folder, in CSV format, as `projectname_*.csv`.
+
+To clear all the generated files for one project (or a subset) you can use the [ClearProject](scripts/ClearProject.sh) script in the **helper** folder.
+It will delete all files in the **figures** and **results** folder matching the project name.
+The script does not delete any of the files in the **data** folder, so the raw data will be conserved.
+
+```bash
+./ClearProject.sh projectname
+./ClearProject.sh example1  # This deletes figures and results of example1
+./ClearProject.sh example*  # This deletes all example projects at once
+```
+
 ## Supported Graphs
 The supported graphical visualisations are described here and example figures and input formats are shown alongside.
-The scripts are divided into six statistical topics: **distribution**, **correlation**, **classification**, **ranking**, **evolution** and **networks**.
+The scripts are divided into six statistical topics: 
 
-### 1 Distribution
+1. [Distribution](#1-distribution)
+2. [Correlation](#2-correlation)
+3. [Classification](#3-classification)
+4. [Ranking](#4-ranking)
+5. [Evolution](#5-evolution)
+6. [Networks](#6-networks)
 
-The [Distribution.R](source/Distribution.R) source file contains functions to visualize continuos and discrete **data distributions**.
+### 1. Distribution
+The [Distribution.R](source/Distribution.R) source file contains functions to visualize multivariate continuos and discrete **data distributions**.
 
-#### 1.1 Continuous Variable Distributions
+#### 1.1. Continuous Distributions
+Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input format is shared for all of them, consisting of an optional **Name** column, a **Group** variable column and a **Value** column (see the [example file](data/example7.csv)).
 
-Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input format is shared for all of them, consisting of an optional **Name** column, a **Factor** variable column and a **Value** column (see the [example file](data/example7)).
-
-Name | Factor | Value |
+Name | Group | Value |
 ---|---|---|---
-point 1 | group 1 | 0.5 |
-point 2 | group 1 | 0.75 |
-point 3 | group 2 | 0.23 |
-... | ... | ... |
+Character | Factor | Numeric |
 
-The bash script [AllContinousDistributions.sh](scripts/AllContinuousDistributions.sh) generates all the available plots for continuous data distributions at once.
+The shell script [AllContinousDistributions.sh](scripts/AllContinuousDistributions.sh) generates all the available plots for continuous data distributions at once.
 
-##### 1.1.1 Histogram Density Plot
+##### 1.1.1. Histogram Density Plot
+For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density lines together with the underlying histograms slightly transparent in the same plot. The histogram is scaled to the densisty line.
 
-For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density line together with the underlying histogram slightly transparent in the same figure. The histogram is scaled to the densisty line, so that all variables can be visualized in the same plot.
+![figure](figures/example1_density.png).
 
-An example figure can be found [here](figures/example1_density.pdf).
-
-##### 1.1.2 Box Plot
-
+##### 1.1.2. Box Plot
 As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. The [BoxPlot.R](scripts/BoxPlot.R) script generates such a figure.
-An example figure can be found [here](figures/example7_boxplot.pdf).
 
-##### 1.1.3 Violin Box Plot
+![figure](figures/example7_boxplot.png).
 
-However, multimodal properties of the distribution cannot be observed in a simple box plot, and a violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
-An example figure can be found [here](figures/example7_violinplot.pdf).
+##### 1.1.3. Violin Box Plot
+However, multimodal properties of the distribution cannot be observed in a simple box plot. A violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
 
-For discrete variables, the percentage and frequency of each class can be visualized using the [PieChart.R](scripts/PieChart.R) script.
-An example figure can be found [here](figures/example6.pdf).
+![figure](figures/example7_violinplot.png).
+
+#### 1.2. Discrete Distributions
+Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each class (or label, or type) can be visualized.
+
+##### 1.2.1. Pie Chart
+The pie chart is the simplest of the visualization and allows only the representation of a single variable distribution in each figure. The [PieChart.R](scripts/PieChart.R) script takes as input an optional **Name** column and a **Class** column (see the [example file](data/example6.csv)).
+
+Name | Class |
+---|---|---
+Character | Factor |
+
+![figure](figures/example6.png).
+
+##### 1.2.2. Bar Plot
+The bar plot allows the representation of multiple variables in the same figure. The [BarPlot.R](scripts/BarPlot.R) script takes as input an optional **Name** column, a **Group** variable column and a **Class** column (see the [example file](data/example5.csv)).
+
+Name | Group | Class |
+---|---|---|---
+Character | Factor | Factor |
+
+![figure](figures/example5.png).
 
 ### 2. Correlation
 
-The [Correlation.R](source/Correlation.R) source file contains functions to calculate and visualize the **contingency table** of two discrete variable counts and the correlation of continuous variables.
+The [Correlation.R](source/Correlation.R) source file contains functions to evaluate and visualize the correlation of discrete variable pair counts (contingency table) and continuous variables.
 
+#### 2.1. Contingency Table Plot
 For discrete variables, the [ContingencyTableBarplot](scripts/ContingencyTableBarplot.R) plots the percentage or frequency of each class combination from two variables as a barplot.
 An example figure can be found [here](figures/example5.pdf).
+
+#### 2.2. Correlation 2D Plot
+
 
 Coming soon...
   - Contingency Table Plot
@@ -94,30 +141,6 @@ The [Networks.R](source/Networks.R) source file contains functions to visualize 
 
 For a simple graph with optional weighted or labeled edges the [NetworkGraph.R](scripts/NetworkGraph.R) script can be used.
 An example figure can be found [here](figures/example8.pdf).
-
-## Usage
-Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.
-If your data file is not in the correct format, you can use some of the scripts in the **helper** folder to convert them.
-Change to the scripts directory and run the desired script from the command line by typing:
-
-```bash
-cd /path/to/science-graphics/scripts
-./Script projectname [args] # the name of the project without extension, optional arguments
-./ConfusionMatrixPlot.R example2 5
-```
-
-The generated figures will be stored in the **figures** folder, in PDF and SVG formats, as `projectname.pdf` and `projectname.svg`.
-Any generated text results (statistics, summary, etc) will be stored in the **results** folder, in CSV format, as `projectname_*.csv`.
-
-To clear all the generated files for one project (or a subset) you can use the [ClearProject](scripts/ClearProject.sh) script in the **helper** folder.
-It will delete all files in the **figures** and **results** folder matching the project name.
-The script does not delete any of the files in the **data** folder, so the raw data will be conserved.
-
-```bash
-./ClearProject.sh projectname
-./ClearProject.sh example1  # This deletes figures and results of example1
-./ClearProject.sh example*  # This deletes all example projects at once
-```
 
 ## Dependencies
 - **R** version `3.0.2` or higher.

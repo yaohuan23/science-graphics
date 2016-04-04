@@ -46,18 +46,30 @@ writeData = function(project, data) {
   cat(paste("Writing", project, "to data folder\n"))
 }
 
-#' Save a plot as a PDF and SVG in the figures folder.
+#' Save a plot in the figures folder in the desired format.
 #' 
 #' @param project name
 #' @param plot the figure object
-saveFigure = function(project, plot) {
+#' @param format the format of the output svgpdfpng
+saveFigure = function(project, plot, format="pdf") {
   cat(paste("Saving", project, "to figures folder\n"))
-  # PDF figure
-  pdf(paste("../figures/", project, ".pdf", sep=""))
-  print(plot)
-  dev.off()
-  # SVG figure
-  svg(paste("../figures/", project, ".svg", sep=""))
-  print(plot)
-  dev.off()
+  
+  if (grepl("pdf",format)) {
+    # PDF figure
+    pdf(paste("../figures/", project, ".pdf", sep=""))
+    print(plot)
+    dev.off()
+  }
+  if (grepl("svg",format)) {
+    # SVG figure
+    svg(paste("../figures/", project, ".svg", sep=""))
+    print(plot)
+    dev.off()
+  }
+  if (grepl("png", format)) {
+    # PNG figure
+    png(paste("../figures/", project, ".png", sep=""))
+    print(plot)
+    dev.off()
+  }
 }

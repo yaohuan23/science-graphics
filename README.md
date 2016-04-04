@@ -9,30 +9,29 @@ Note that each script (which generates a single figure and an optional text outp
 However, the framework allows the easy extension of support for new applications.
 
 ## Usage
-Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.
-If your data file is not in the correct format, you can use some of the scripts in the **helper** folder to convert them.
-Change to the scripts directory and run the desired script from the command line by typing:
+1. Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.
+2. If your data file is not in the correct format, you can use some of the scripts in the **helper** folder to convert it.
+3. Run the desired script from the command line by typing:
 
 ```bash
-cd /path/to/science-graphics/scripts
-./Script projectname [args] # the name of the project without extension, optional arguments
-./ConfusionMatrixPlot.R example2 5
+/path/to/science-graphics/scripts/Script.R projectname [-args=values] # projectname without extension
+~/science-graphics/scripts/ConfusionMatrixPlot.R example_confusion-matrix -format=pdf -fontsize=5
 ```
 
-The generated figures will be stored in the **figures** folder, in PDF and SVG formats, as `projectname.pdf` and `projectname.svg`.
-Any generated text results (statistics, summary, etc) will be stored in the **results** folder, in CSV format, as `projectname_*.csv`.
+The generated figures will be stored in the **figures** folder, in the desired format, as `projectname_scriptname`.
+Any generated text results (statistics, summary, etc) will be stored in the **results** folder, in CSV format only, as `projectname_extension`.
 
-To clear all the generated files for one project (or a subset) you can use the [ClearProject](scripts/ClearProject.sh) script in the **helper** folder.
+To clear all the generated files for one project (or a subset) you can use the [ClearProject.sh](scripts/ClearProject.sh) script in the **helper** folder.
 It will delete all files in the **figures** and **results** folder matching the project name.
 The script does not delete any of the files in the **data** folder, so the raw data will be conserved.
 
 ```bash
-./ClearProject.sh projectname
-./ClearProject.sh example1  # This deletes figures and results of example1
-./ClearProject.sh example*  # This deletes all example projects at once
+/path/to/science-graphics/helper/ClearProject.sh projectname
+/path/to/science-graphics/helper/ClearProject.sh example1  # This deletes figures and results of example1
+/path/to/science-graphics/helper/ClearProject.sh example*  # This deletes all example projects at once
 ```
 
-## Supported Graphs
+## Figures
 The supported graphical visualisations are described here and example figures and input formats are shown alongside.
 The scripts are divided into six statistical topics: 
 

@@ -147,7 +147,7 @@ Name | Relevance |
 ---|---|
 Character | Numeric |
 
-[figure](figures/example_pr-curve_pr-curve.png)
+![figure](figures/example_pr-curve_pr-curve.png)
   
 ### 5. Evolution
 The [Evolution.R](source/Evolution.R) source file contains functions to visualize variable fluctuations and evolution in function of time (ODEs), step (MC simulations), or other independent variables (like wavelength, distance, etc).

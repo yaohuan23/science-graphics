@@ -11,42 +11,69 @@ source("../source/ScienceGraphicsIO.R")
 source("../source/Distribution.R")
 
 # Default input parameters
-project = "example1"
+file = "example_continuous-distribution"
+format = "pdf"
 binSize = 0
-minX = NA
-maxX = NA
+xlab = NA
+ylab = NA
+xmin = NA
+xmax = NA
+stats = TRUE
 
 printSGheader("Histogram Density Plot")
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0) {
-  cat(paste("No argument given.\n"))
-} else if (length(args)==1) {
-  project = args[1]
-} else if (length(args)==2) {
-  project = args[1]
-  binSize = as.double(args[2])
-} else if (length(args)==3) {
-  project = args[1]
-  binSize = as.double(args[2])
-  minX = as.double(args[3])
-} else {
-  project = args[1]
-  binSize = as.double(args[2])
-  minX = as.double(args[3])
-  maxX = as.double(args[4])
-}
-cat(paste("Using arguments:", project, binSize, minX, maxX, "\n"))
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option("--bin", type="numeric", default=binSize,
+              help="The bin size [default range/min(points/variables,30)]",
+              metavar="numeric"),
+  make_option("--min", type="numeric", default=xmin,
+              help="The minimum value of the variable",
+              metavar="minimum"),
+  make_option("--max", type="numeric", default=xmax,
+              help="The maximum value of the variable",
+              metavar="maximum"),
+  make_option("--xlab", type="character", default=xlab,
+              help="The x-axis label [default Column header]",
+              metavar="label"),
+  make_option("--ylab", type="character", default=ylab,
+              help="The y-axis label [default Column header]",
+              metavar="label"),
+  make_option("--stats", action="store_true", default=stats,
+              help="Calculate and store distribution statistics [default]"),
+  make_option("--nostats", action="store_false", dest="stats",
+              help="Do not calculate distribution statistics")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
-data = parseFile(project)
+data = parseFile(opt$input)
 if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
-# Calculate and store statistics
-stats = toDistributionStats(data)
-writeResult(paste(project, "stats", sep="_"), stats)
+if (opt$stats) {
+  # Calculate and store statistics
+  stats = calculateDistributionStats(data)
+  writeResult(paste(opt$input, "stats", sep="_"), stats)
+}
 
-p = plotHistogramDensity(data, binSize, minX, maxX)
-saveFigure(paste(project, "density", sep="_"), p)
+# Create the plot
+p = plotHistogramDensity(data, opt$bin)
+
+# Adjust the y axis limits to min and max
+if (!is.na(opt$min) || !is.na(opt$max)) {
+  # Calculate limits if one not given
+  if (is.na(opt$max))
+    opt$max = max(data[2])
+  if (is.na(opt$min))
+    opt$min = min(data[2])
+  p = p + coord_cartesian(xlim = c(opt$min, opt$max))
+}
+
+# Set the axis labels if given
+if (!is.na(opt$xlab))
+  p = p + xlab(opt$xlab)
+if (!is.na(opt$ylab))
+  p = p + ylab(opt$ylab)
+
+saveFigure(paste(opt$input, "density", sep="_"), p, opt$output)

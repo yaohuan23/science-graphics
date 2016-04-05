@@ -11,42 +11,65 @@ source("../source/ScienceGraphicsIO.R")
 source("../source/Distribution.R")
 
 # Default input parameters
-project = "example7"
+file = "example_continuous-distribution"
+format = "pdf"
+xlab = NA
+ylab = NA
 ymin = NA
 ymax = NA
-scaling = "width"
+stats = TRUE
 
 printSGheader("Violin Box Plot")
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0) {
-  cat(paste("No argument given.\n"))
-} else if (length(args)==1) {
-  project = args[1]
-} else if (length(args)==2) {
-  project = args[1]
-  ymin = as.double(args[2])
-} else if (length(args)==3) {
-  project = args[1]
-  ymin = as.double(args[2])
-  ymax = as.double(args[3])
-} else {
-  project = args[1]
-  ymin = as.double(args[2])
-  ymax = as.double(args[3])
-  scaling = args[4]
-}
-cat(paste("Using arguments:", project, ymin, ymax, scaling, "\n"))
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option("--min", type="numeric", default=ymin,
+              help="The minimum value of the variable",
+              metavar="minimum"),
+  make_option("--max", type="numeric", default=ymax,
+              help="The maximum value of the variable",
+              metavar="maximum"),
+  make_option("--xlab", type="character", default=xlab,
+              help="The x-axis label [default Column header]",
+              metavar="label"),
+  make_option("--ylab", type="character", default=ylab,
+              help="The y-axis label [default Column header]",
+              metavar="label"),
+  make_option("--stats", action="store_true", default=stats,
+              help="Calculate and store distribution statistics [default]"),
+  make_option("--nostats", action="store_false", dest="stats",
+              help="Do not calculate distribution statistics")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
-data = parseFile(project)
+data = parseFile(opt$input)
 if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
-# Calculate and store statistics
-stats = toDistributionStats(data)
-writeResult(paste(project, "stats", sep="_"), stats)
+if (opt$stats) {
+  # Calculate and store statistics
+  stats = calculateDistributionStats(data)
+  writeResult(paste(opt$input, "stats", sep="_"), stats)
+}
 
-p = violinBoxPlot(data, ymin, ymax, scaling)
-saveFigure(paste(project, "violinplot", sep="_"), p)
+# Create the plot
+p = violinBoxPlot(data)
+
+# Adjust the y axis limits to min and max
+if (!is.na(opt$min) || !is.na(opt$max)) {
+  # Calculate limits if one not given
+  if (is.na(opt$max))
+    opt$max = max(data[2])
+  if (is.na(opt$min))
+    opt$min = min(data[2])
+  p = p + coord_cartesian(ylim = c(opt$min, opt$max))
+}
+
+# Set the axis labels if given
+if (!is.na(opt$xlab))
+  p = p + xlab(opt$xlab)
+if (!is.na(opt$ylab))
+  p = p + ylab(opt$ylab)
+
+saveFigure(paste(opt$input, "violinplot", sep="_"), p, opt$output)

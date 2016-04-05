@@ -8,28 +8,18 @@ suppressPackageStartupMessages(library(ggplot2))
 #' The histogram is scaled to the density scale.
 #' 
 #' @param data two columns, variable name (factor) and value
-#' @param bin size to use, default to min(range/(points/(variables)),30)
-#' @param min minimum value of the range
-#' @param max maximum value of the range
+#' @param bin size to use, default to range/min(points/(variables),30)
 #' @return ggplot2 object
-plotHistogramDensity = function(data, bin=0, min=NA, max=NA) {
+plotHistogramDensity = function(data, bin=0) {
   
   # Ensure that first column is a factor
   data[,1] = as.factor(data[,1])
   
-  # Calculate limits if not given
-  if (is.na(max))
-    max = max(data[2])
-  if (is.na(min))
-    min = min(data[2])
-  
   # Default bin size calculation
   if (bin == 0){
-    type = data
-    names(type) = c("Type", "Value")
-    levels = nlevels(type$Type)
-    bins = as.integer(nrow(data)/(levels))
-    range = max - min
+    levels = nlevels(data[[1]])
+    bins = as.integer(nrow(data)/levels)
+    range = max(data[,2]) - min(data[,2])
     range = range + 0.01 * range
     bin = range / min(bins, 30)
   }
@@ -41,7 +31,6 @@ plotHistogramDensity = function(data, bin=0, min=NA, max=NA) {
     geom_histogram(position="identity", alpha = 0.3, colour=NA, 
                    binwidth = bin) + 
     geom_line(stat="density") +
-    coord_cartesian(xlim = c(min, max)) +
     theme_bw()
 
 }
@@ -82,7 +71,7 @@ toFrequencyTable = function(data) {
 #' 
 #' @param data two columns: group and value
 #' @return stats distribution statistics as data frame
-toDistributionStats = function(data) {
+calculateDistributionStats = function(data) {
   
   copy = data
   names(copy) = c("Group", "Value")
@@ -98,28 +87,18 @@ toDistributionStats = function(data) {
 #' an underlying box plot and a point in the mean.
 #' 
 #' @param data two columns, variable name (factor) and value
-#' @param max maximum value of the range
-#' @param min minimum value of the range
-#' @param scale normalization of the violin shape [width,area,count]
 #' @return ggplot2 object
-violinBoxPlot = function(data, max=NA, min=NA, scale="width") {
+violinBoxPlot = function(data) {
   
   # Ensure that first column is a factor
   data[,1] = as.factor(data[,1])
   
-  # Calculate limits if not given
-  if (is.na(max))
-    max = max(data[2])
-  if (is.na(min))
-    min = min(data[2])
-  
   p = ggplot(data, aes_q(x=as.name(names(data)[1]),
                          y=as.name(names(data)[2]))) +
-    geom_violin(scale=scale, trim=FALSE) + 
+    geom_violin(scale="width", trim=FALSE) + 
     geom_boxplot(width=.1, fill="black", outlier.colour=NA) +
     stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=3) +
     stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
-    coord_cartesian(ylim = c(min, max)) +
     theme_bw()
     
 }
@@ -128,25 +107,16 @@ violinBoxPlot = function(data, max=NA, min=NA, scale="width") {
 #' a point in the mean.
 #' 
 #' @param data two columns, variable name (factor) and value
-#' @param max maximum value of the range
-#' @param min minimum value of the range
 #' @return ggplot2 object
-simpleBoxPlot = function(data, max=NA, min=NA) {
+simpleBoxPlot = function(data) {
   
   # Ensure that first column is a factor
   data[,1] = as.factor(data[,1])
-  
-  # Calculate limits if not given
-  if (is.na(max))
-    max = max(data[2])
-  if (is.na(min))
-    min = min(data[2])
   
   p = ggplot(data, aes_q(x=as.name(names(data)[1]),
                          y=as.name(names(data)[2]))) +
     geom_boxplot() +
     stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
-    coord_cartesian(ylim = c(min, max)) +
     theme_bw()
   
 }

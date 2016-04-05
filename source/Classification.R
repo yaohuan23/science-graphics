@@ -91,12 +91,14 @@ toConfusionMatrix = function(data) {
 #' threshold.
 #' 
 #' @param data [Algorithm, Score, Relevance]
-#' @param xmin in percentage [0,100] %
-#' @param xmax in percentage [0,100] %
-#' @param ymin in percentage [0,100] %
-#' @param ymax in percentage [0,100] %
-#' @param thresholds
-plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=list()) {
+#' @param xmin in percentage [0,100]
+#' @param xmax in percentage [0,100]
+#' @param ymin in percentage [0,100]
+#' @param ymax in percentage [0,100]
+#' @param threshold single threshold for all
+#' @param thresholds individual thresholds for each curve (dominates)
+plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, 
+                       threshold = NA, thresholds = list()) {
   
   scores = c(split(data[[2]], data[[1]]))
   labels = c(split(data[[3]], data[[1]]))
@@ -106,6 +108,13 @@ plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=list
   
   pred <- prediction(scores, labels)
   perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+  
+  thr = c()
+  if (length(thresholds) > 0){
+    thr = thresholds
+  } else if (!is.na(threshold)){
+    thr[[1]] = threshold
+  }
   
   plot(perf,
        col=as.list(colors),
@@ -120,7 +129,7 @@ plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=list
        points.col=as.list(colors),
        points.pch=20,
        points.cex=2.0,
-       print.cutoffs.at=thresholds[1:length(thresholds)],
+       print.cutoffs.at=thr,
        cutoff.label.function=function(x) { "" },
        lwd=2)
   legend("bottomright",
@@ -129,7 +138,6 @@ plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, thresholds=list
          lwd=2,
          cex=.9,
          inset=c(.1,.05))
-  
 }
 
 #' Calculate the Cramer's V coefficient of a classifier.

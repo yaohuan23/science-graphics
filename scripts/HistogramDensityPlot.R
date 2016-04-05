@@ -76,4 +76,4 @@ if (!is.na(opt$xlab))
 if (!is.na(opt$ylab))
   p = p + ylab(opt$ylab)
 
-saveFigure(paste(opt$input, "density", sep="_"), p, opt$output)
+saveFigure(paste(opt$input, "histogram-density", sep="_"), p, opt$output)

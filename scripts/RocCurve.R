@@ -10,61 +10,75 @@
 source("../source/ScienceGraphicsIO.R")
 source("../source/Classification.R")
 
+# Project name
+file = "example_roc-curve"
+format = "pdf"
+xmin = 0
+xmax = 100
+ymin = 0
+ymax = 100
+threshold = NA
+thresholds = NA
+
 printSGheader("ROC Curve")
 
-# Project name
-project = "example10"
-xn = 0
-xx = 100
-yn = 0
-yx = 100
-thres = c()
+# Options for specific parameters of this plot
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0){
-  cat(paste("No argument given\n"))
-} else if (length(args)==1) {
-  project = args[1]
-} else if (length(args)==2) {
-  project = args[1]
-  xn = as.numeric(args[2])
-} else if (length(args)==3) {
-  project = args[1]
-  xn = as.numeric(args[2])
-  xx = as.numeric(args[3])
-} else if (length(args)==4) {
-  project = args[1]
-  xn = as.numeric(args[2])
-  xx = as.numeric(args[3])
-  yn = as.numeric(args[4])
-} else if (length(args)==5) {
-  project = args[1]
-  xn = as.numeric(args[2])
-  xx = as.numeric(args[3])
-  yn = as.numeric(args[4])
-  yx = as.numeric(args[5])
-} else {
-  project = args[1]
-  xn = as.numeric(args[2])
-  xx = as.numeric(args[3])
-  yn = as.numeric(args[4])
-  yx = as.numeric(args[5])
-  thres = as.numeric(args[-(1:5)])
+option_list = c(createOptionsIO(file, format),
+  make_option("--xmin", type="numeric", default=xmin,
+              help="The minimum value of the FP rate [default %default]",
+              metavar="percentage"),
+  make_option("--xmax", type="numeric", default=xmax,
+              help="The maximum value of the FP rate [default %default]",
+              metavar="percentage"),
+  make_option("--ymin", type="numeric", default=ymin,
+              help="The minimum value of the TP rate [default %default]",
+              metavar="percentage"),
+  make_option("--ymax", type="numeric", default=ymax,
+              help="The maximum value of the TP rate [default %default]",
+              metavar="percentage"),
+  make_option(c("-t", "--threshold"), type="numeric", default=threshold,
+              help="A score threshold for all curves",
+              metavar="score"),
+  make_option("--thresholds", type="character", default=thresholds,
+              help="Individual score thresholds for each curve, comma separated",
+              metavar="scores")
+)
+opt = parse_args(OptionParser(option_list=option_list))
+
+# Split thresholds into a list
+if (!is.na(opt$thresholds)){
+  opt$thresholds = strsplit(opt$thresholds, ",", fixed=TRUE)
+  opt$thresholds = as.list(as.numeric(opt$thresholds[[1]]))
 }
-cat(paste("Using arguments:", project, xn, xx, yn, yx,
-          paste(thres, collapse=" "), "\n"))
 
-data = parseFile(project)
+data = parseFile(opt$input)
 
 if (ncol(data) > 3)
   data = data[c(2,3,4)]
 
-# Saving procedure is different since it is not a ggplot object
-pdf(paste("../figures/", project, ".pdf", sep=""))
-p = plotROCurve(data, xn, xx, yn, yx, as.list(thres))
-dev.off()
-
-svg(paste("../figures/", project, ".svg", sep=""))
-p = plotROCurve(data, xn, xx, yn, yx, as.list(thres))
-dev.off()
+# Saving procedure is different since the R plot object is complex
+# Consider using recordPlot in the future...
+cat(paste("> Saving", opt$input, "to figures folder\n"))
+if (grepl("pdf",opt$output)) {
+  # PDF figure
+  pdf(paste("../figures/", opt$input, ".pdf", sep=""))
+  plotROCurve(data, opt$xmin, opt$xmax, opt$ymin, opt$ymax, opt$threshold,
+              opt$thresholds)
+  dev.off()
+}
+if (grepl("svg",opt$output)) {
+  # SVG figure
+  svg(paste("../figures/", opt$input, ".svg", sep=""))
+  plotROCurve(data, opt$xmin, opt$xmax, opt$ymin, opt$ymax, opt$threshold,
+              opt$thresholds)
+  dev.off()
+}
+if (grepl("png", opt$output)) {
+  # PNG figure
+  png(paste("../figures/", opt$input, ".png", sep=""), 
+      height = 4096, width = 4096, res = 600)
+  plotROCurve(data, opt$xmin, opt$xmax, opt$ymin, opt$ymax, opt$threshold,
+              opt$thresholds)
+  dev.off()
+}

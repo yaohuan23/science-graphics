@@ -10,29 +10,20 @@ source("../source/Networks.R")
 printSGheader("Network Graph")
 
 # Project name
-project = "example8"
+file = "example_network"
+format = "pdf"
 dir = TRUE
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0){
-  cat("No arguments given.\n")
-} else if (length(args)==1){
-  project = args[1]
-} else {
-  project = args[1]
-  dir = args[2]
-}
-cat(paste("Using arguments:", project, dir, "\n"))
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option(c("-d", "--directed"), action="store_true", default=dir,
+              help="Directed graph [default]"),
+  make_option(c("-u", "--undirected"), action="store_false", dest="directed",
+              help="Undirected graph")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
-data = parseFile(project)
-g = drawNetworkGraph(data, dir)
+data = parseFile(opt$input)
+g = drawNetworkGraph(data, opt$directed)
 
-# Saving procedure is different since it is not a ggplot
-pdf(paste("../figures/", project, ".pdf", sep=""))
-plot(g)
-dev.off()
-
-svg(paste("../figures/", project, ".svg", sep=""))
-plot(g)
-dev.off()
+saveRPlot(paste(opt$input, "network-graph", sep="_"), g, opt$output)

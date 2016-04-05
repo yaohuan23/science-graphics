@@ -11,38 +11,43 @@ source("../source/ScienceGraphicsIO.R")
 source("../source/Classification.R")
 
 # Default input parameters
-project = "example2"
+file = "example_confusion-matrix"
+format = "pdf"
 labelSize = 4
+stats = TRUE
 
 printSGheader("Confusion Matrix Plot")
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0) {
-  cat("No arguments given.\n")
-} else if (length(args)==1) {
-  project = args[1]
-} else {
-  project = args[1]
-  labelSize = strtoi(args[2])
-}
-cat(paste("Using arguments:", project, labelSize, "\n"))
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option("--labSize", type="integer", default=labelSize,
+              help="The size of the count labels [default %default]",
+              metavar="NUMBER"),
+  make_option("--stats", action="store_true", default=stats,
+              help="Calculate and store evaluation statistics [default]"),
+  make_option("--nostats", action="store_false", dest="stats",
+              help="Do not calculate evaluation statistics")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
 # data = [Name] Actual Prediction
-data = parseFile(project)
+data = parseFile(opt$input)
 if (ncol(data) > 2){
   data = data[c(2,3)]
 }
 
-# Calculate and wrtie confusion matrix
+# Calculate and write confusion matrix
 matrix = toConfusionMatrix(data)
-writeResult(paste(project, "_confusionMatrix", sep=""), matrix)
+writeResult(paste(opt$input, "_matrix", sep=""), matrix)
 
-# Calculate the Cramer V coefficient and precison
-cv = cv.test(data[[1]],data[[2]])
-pr = precision(data)
-cat(paste("##   Cramér V/Phi: ", cv, "\n"))
-cat(paste("##   Precision:    ", pr, "\n"))
+if (opt$stats) {
+  # Calculate the precision and Cramer V coefficient
+  cv = cv.test(data[[1]],data[[2]])
+  pr = precision(data)
+  stats = data.frame(c("Precision", "Cramér Phi"), c(pr, cv))
+  names(stats) = c("Score", "Value")
+  writeResult(paste(opt$input, "stats", sep="_"), stats)
+}
 
-p = plotConfusionMatrix(matrix, labelSize)
-saveFigure(project, p)
+p = plotConfusionMatrix(matrix, opt$labSize)
+saveFigure(paste(opt$input, "conf-matrix", sep="_"), p, opt$output)

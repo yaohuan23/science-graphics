@@ -50,9 +50,10 @@ writeData = function(project, data) {
 }
 
 #' Save a plot in the figures folder in the desired format.
+#' Use this function for ggplots.
 #' 
 #' @param project name
-#' @param plot the figure object
+#' @param plot the figure object (ggplot)
 #' @param format the format of the output svgpdfpng
 saveFigure = function(project, plot, format="pdf") {
   cat(paste("> Saving", project, "to figures folder\n"))
@@ -74,6 +75,36 @@ saveFigure = function(project, plot, format="pdf") {
     png(paste("../figures/", project, ".png", sep=""), 
         height = 4096, width = 4096, res = 600)
     print(plot)
+    dev.off()
+  }
+}
+
+#' Save a plot in the figures folder in the desired format.
+#' Use this function for R plots.
+#' 
+#' @param project name
+#' @param plot the plot object (R plot)
+#' @param format the format of the output svgpdfpng
+saveRPlot = function(project, plot, format="pdf") {
+  cat(paste("> Saving", project, "to figures folder\n"))
+  
+  if (grepl("pdf",format)) {
+    # PDF figure
+    pdf(paste("../figures/", project, ".pdf", sep=""))
+    plot(plot)
+    dev.off()
+  }
+  if (grepl("svg",format)) {
+    # SVG figure
+    svg(paste("../figures/", project, ".svg", sep=""))
+    plot(plot)
+    dev.off()
+  }
+  if (grepl("png", format)) {
+    # PNG figure
+    png(paste("../figures/", project, ".png", sep=""), 
+        height = 4096, width = 4096, res = 600)
+    plot(plot)
     dev.off()
   }
 }

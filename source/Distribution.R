@@ -1,7 +1,7 @@
 # Plot variable distributions
 # Aleix Lafita - 02.2016
 
-library(ggplot2)
+suppressPackageStartupMessages(library(ggplot2))
 
 #' Plot the data distribution of the variables as a density with 
 #' underlying histogram.

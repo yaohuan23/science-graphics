@@ -1,7 +1,7 @@
 # Draw a Network Graph
 # Aleix Lafita - 03.2016
 
-library(igraph)
+suppressPackageStartupMessages(library(igraph))
 
 #' Draw a simple network graph with node labels and optionally
 #' weighted edges.

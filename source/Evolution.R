@@ -1,8 +1,8 @@
 # Plot variable evolution
 # Aleix Lafita - 02.2016
 
-library(ggplot2)
-library(gridExtra)
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(gridExtra))
 
 #' Plot the evolution of multiple variables during a step-based simulation.
 #' The first and second columns of the input data frame must contain the 

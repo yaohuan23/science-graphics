@@ -1,12 +1,12 @@
 # Plots for evaluating classifier performance
 # Aleix Lafita - 01.2016
 
-library(ggplot2)
-library(reshape2)
-library(plyr)
-library(mlearning)
-library(ROCR)
-library(RColorBrewer)
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(plyr))
+suppressPackageStartupMessages(library(mlearning))
+suppressPackageStartupMessages(library(ROCR))
+suppressPackageStartupMessages(library(RColorBrewer))
 
 #' Plot the confusion matrix of a classifier with the actual class in the
 #' x axis and a stacked bar proportional to the predicted class fraction

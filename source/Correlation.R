@@ -1,8 +1,8 @@
 # Visualize discrete and continuous variable correlations
 # Aleix Lafita - 02.2016
 
-library(ggplot2)
-library(reshape2)
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(reshape2))
 
 #' Plot the contingency table as a barplot.
 #' The total number of observables are printed at the top.

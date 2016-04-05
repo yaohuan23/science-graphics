@@ -23,7 +23,6 @@ thresholds = NA
 printSGheader("ROC Curve")
 
 # Options for specific parameters of this plot
-
 option_list = c(createOptionsIO(file, format),
   make_option("--xmin", type="numeric", default=xmin,
               help="The minimum value of the FP rate [default %default]",
@@ -62,23 +61,23 @@ if (ncol(data) > 3)
 cat(paste("> Saving", opt$input, "to figures folder\n"))
 if (grepl("pdf",opt$output)) {
   # PDF figure
-  pdf(paste("../figures/", opt$input, ".pdf", sep=""))
+  pdf(paste("../figures/", opt$input, "_roc-curve.pdf", sep=""))
   plotROCurve(data, opt$xmin, opt$xmax, opt$ymin, opt$ymax, opt$threshold,
               opt$thresholds)
-  dev.off()
+  log = dev.off() # This supresses printing 'null device'
 }
 if (grepl("svg",opt$output)) {
   # SVG figure
-  svg(paste("../figures/", opt$input, ".svg", sep=""))
+  svg(paste("../figures/", opt$input, "_roc-curve.svg", sep=""))
   plotROCurve(data, opt$xmin, opt$xmax, opt$ymin, opt$ymax, opt$threshold,
               opt$thresholds)
-  dev.off()
+  log = dev.off() # This supresses printing 'null device'
 }
 if (grepl("png", opt$output)) {
   # PNG figure
-  png(paste("../figures/", opt$input, ".png", sep=""), 
+  png(paste("../figures/", opt$input, "_roc-curve.png", sep=""), 
       height = 4096, width = 4096, res = 600)
   plotROCurve(data, opt$xmin, opt$xmax, opt$ymin, opt$ymax, opt$threshold,
               opt$thresholds)
-  dev.off()
+  log = dev.off() # This supresses printing 'null device'
 }

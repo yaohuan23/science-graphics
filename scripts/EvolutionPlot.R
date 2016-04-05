@@ -8,38 +8,56 @@
 # Import all the source files needed
 source("../source/ScienceGraphicsIO.R")
 source("../source/Evolution.R")
-library(grid)
+
+# Default input parameters
+file = "example_evolution"
+format = "pdf"
+points = TRUE
+ranges = NA
 
 printSGheader("Evolution Plot")
 
-# Project name
-project = "example4"
-points = TRUE
-ranges = c()
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option("--ranges", type="character", default=ranges,
+              help="Individual value ranges for each variable, alternating comma separated min,max",
+              metavar="VALUES"),
+  make_option("--points", action="store_true", default=points,
+              help="Show the data points [default]"),
+  make_option("--nopoints", action="store_false", dest="points",
+              help="Do not show the data points")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0){
-  cat(paste("No argument given\n"))
-} else if (length(args)==1) {
-  project = args[1]
-} else if (length(args)==2) {
-  project = args[1]
-  points = as.logical(args[2])
+# Split ranges into a list
+if (!is.na(opt$ranges)){
+  opt$ranges = strsplit(opt$ranges, ",", fixed=TRUE)
+  opt$ranges = as.numeric(opt$ranges[[1]])
 } else {
-  project = args[1]
-  points = as.logical(args[2])
-  ranges = as.numeric(args[-(1:2)])
+  opt$ranges = c()
 }
-cat(paste("Using arguments:", project, points, paste(ranges, collapse=" "), "\n"))
 
-data = parseFile(project)
+data = parseFile(opt$input)
 
 # Saving procedure is different since it is a grob object
-pdf(paste("../figures/", project, ".pdf", sep=""))
-p = multipleEvolutionPlot(data, points, ranges)
-dev.off()
-
-svg(paste("../figures/", project, ".svg", sep=""))
-grid.draw(p)
-dev.off()
+# Consider using recordPlot in the future...
+cat(paste("> Saving", opt$input, "to figures folder\n"))
+if (grepl("pdf",opt$output)) {
+  # PDF figure
+  pdf(paste("../figures/", opt$input, "_evolution.pdf", sep=""))
+  multipleEvolutionPlot(data, opt$points, opt$ranges)
+  log = dev.off() # This supresses printing 'null device'
+}
+if (grepl("svg",opt$output)) {
+  # SVG figure
+  svg(paste("../figures/", opt$input, "_evolution.svg", sep=""))
+  multipleEvolutionPlot(data, opt$points, opt$ranges)
+  log = dev.off() # This supresses printing 'null device'
+}
+if (grepl("png", opt$output)) {
+  # PNG figure
+  png(paste("../figures/", opt$input, "_evolution.png", sep=""), 
+      height = 4096, width = 4096, res = 600)
+  multipleEvolutionPlot(data, opt$points, opt$ranges)
+  log = dev.off() # This supresses printing 'null device'
+}

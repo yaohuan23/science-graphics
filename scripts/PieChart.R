@@ -10,29 +10,31 @@
 source("../source/ScienceGraphicsIO.R")
 source("../source/Distribution.R")
 
+# Default input parameters
+file = "example_discrete-distribution-single"
+format = "pdf"
+stats = TRUE
+
 printSGheader("Pie Chart")
 
-# Default input parameters
-project = "example6"
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option("--stats", action="store_true", default=stats,
+              help="Calculate and store distribution statistics [default]"),
+  make_option("--nostats", action="store_false", dest="stats",
+              help="Do not calculate distribution statistics")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0) {
-  cat("No arguments given\n")
-} else if (length(args)==1) {
-  project = args[1]
-}
-cat(paste("Using arguments:", project, "\n"))
-
-data = parseFile(project)
-if (ncol(data) > 1){
+data = parseFile(opt$input)
+if (ncol(data) > 1)
   data = data[2]
-}
 
-# Calulate frequency table and store to results
-table = toFrequencyTable(data)
-print(table)
-writeResult(paste(project, "frequencyTable", sep="_"), table)
+if (opt$stats) {
+  # Calulate frequency table and store to results
+  table = toFrequencyTable(data)
+  writeResult(paste(opt$input, "freq-table", sep="_"), table)
+}
 
 p = pieChart(data)
-saveFigure(project, p)
+saveFigure(paste(opt$input, "pie-chart", sep="_"), p, opt$output)

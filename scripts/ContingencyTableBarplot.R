@@ -10,33 +10,28 @@
 source("../source/ScienceGraphicsIO.R")
 source("../source/Correlation.R")
 
+# Default input parameters
+file = "example_discrete-distribution-multiple"
+format = "pdf"
+value = "Percentage"
+position = "dodge"
+
 printSGheader("Contingency Table Barplot")
 
-# Default input parameters
-project = "example5"
-valueType = "Percentage"
-pos = "dodge"
+# Options for specific parameters of this plot
+option_list = c(createOptionsIO(file, format),
+  make_option(c("-v", "--value"), type="character", default=value,
+              help="The value plotted on the y axis, either Percentage or Frequency [default %default]",
+              metavar="type"),
+  make_option(c("-p", "--position"), type="character", default=position,
+              help="The position of the bars, either stack or dodge [default %default]",
+              metavar="type")
+)
+opt = parse_args(OptionParser(option_list=option_list))
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0) {
-  cat("No arguments given\n")
-} else if (length(args)==1) {
-  project = args[1]
-} else if (length(args)==2) {
-  project = args[1]
-  valueType = args[2]
-} else {
-  project = args[1]
-  valueType = args[2]
-  pos = args[3]
-}
-cat(paste("Using arguments:", project, valueType, pos, "\n"))
-
-data = parseFile(project)
-if (ncol(data) > 2){
+data = parseFile(opt$input)
+if (ncol(data) > 2)
   data = data[c(2,3)]
-}
 
-p = plotContingencyTableBar(data, valueType, pos)
-saveFigure(project, p)
+p = plotContingencyTableBar(data, opt$value, opt$position)
+saveFigure(paste(opt$input, "boxplot", sep="_"), p, opt$output)

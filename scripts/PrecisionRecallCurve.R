@@ -9,24 +9,20 @@
 source("../source/ScienceGraphicsIO.R")
 source("../source/Ranking.R")
 
+# Default input parameters
+file = "example_pr-curve"
+format = "pdf"
+
 printSGheader("Precision-Recall Curve")
 
-# Project name
-project = "example3"
+# Options for specific parameters of this plot
+option_list = createOptionsIO(file, format)
+opt = parse_args(OptionParser(option_list=option_list))
 
-# Parse args if executed from the cmd line
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0){
-  cat(paste("No argument given\n"))
-} else {
-  project = args[1]
-}
-cat(paste("Using arguments:", project, "\n"))
-
-data = parseFile(project)
+data = parseFile(opt$input)
 
 if (ncol(data) > 1)
   data = data[2]
 
 p = precisionRecallCurve(data)
-saveFigure(project, p)
+saveFigure(paste(opt$input, "pr-curve", sep="_"), p, opt$output)

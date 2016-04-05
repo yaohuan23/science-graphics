@@ -62,20 +62,20 @@ saveFigure = function(project, plot, format="pdf") {
     # PDF figure
     pdf(paste("../figures/", project, ".pdf", sep=""))
     print(plot)
-    dev.off()
+    log = dev.off() # This supresses printing 'null device'
   }
   if (grepl("svg",format)) {
     # SVG figure
     svg(paste("../figures/", project, ".svg", sep=""))
     print(plot)
-    dev.off()
+    log = dev.off() # This supresses printing 'null device'
   }
   if (grepl("png", format)) {
     # PNG figure
     png(paste("../figures/", project, ".png", sep=""), 
         height = 4096, width = 4096, res = 600)
     print(plot)
-    dev.off()
+    log = dev.off() # This supresses printing 'null device'
   }
 }
 
@@ -92,20 +92,20 @@ saveRPlot = function(project, plot, format="pdf") {
     # PDF figure
     pdf(paste("../figures/", project, ".pdf", sep=""))
     plot(plot)
-    dev.off()
+    log = dev.off() # This supresses printing 'null device'
   }
   if (grepl("svg",format)) {
     # SVG figure
     svg(paste("../figures/", project, ".svg", sep=""))
     plot(plot)
-    dev.off()
+    log = dev.off() # This supresses printing 'null device'
   }
   if (grepl("png", format)) {
     # PNG figure
     png(paste("../figures/", project, ".png", sep=""), 
         height = 4096, width = 4096, res = 600)
     plot(plot)
-    dev.off()
+    log = dev.off() # This supresses printing 'null device'
   }
 }
 

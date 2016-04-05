@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-# This script calculates and plots the contingency table as a barplot
-# from a collection of variable combinations.
+# This script represents a grouped discrete distribution as a barplot.
+# It can be used to represent melted contingency tables, for example.
 # The format of the input is in two columns, one for each variable.
 # An additional name column can be optionally given in the first column,
 # but it will be ignored.
@@ -34,4 +34,4 @@ if (ncol(data) > 2)
   data = data[c(2,3)]
 
 p = plotContingencyTableBar(data, opt$value, opt$position)
-saveFigure(paste(opt$input, "boxplot", sep="_"), p, opt$output)
+saveFigure(paste(opt$input, "barplot", sep="_"), p, opt$output)

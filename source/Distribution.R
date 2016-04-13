@@ -10,13 +10,13 @@ suppressPackageStartupMessages(library(ggplot2))
 #' @param data two columns, variable name (factor) and value
 #' @param bin size to use, default to range/min(points/(variables),30)
 #' @return ggplot2 object
-plotHistogramDensity = function(data, bin=0) {
+plotHistogramDensity = function(data, bin, min, max) {
   
   # Ensure that first column is a factor
   data[,1] = as.factor(data[,1])
   
   # Default bin size calculation
-  if (bin == 0){
+  if (is.na(bin)){
     levels = nlevels(data[[1]])
     bins = as.integer(nrow(data)/levels)
     range = max(data[,2]) - min(data[,2])
@@ -32,6 +32,17 @@ plotHistogramDensity = function(data, bin=0) {
                    binwidth = bin) + 
     geom_line(stat="density") +
     theme_bw()
+  
+  # Adjust the y axis limits to min and max
+  if (!is.na(min) || !is.na(max)) {
+    # Calculate limits if one not given
+    if (is.na(max))
+      max = max(data[2])
+    if (is.na(min))
+      min = min(data[2])
+    p = p + coord_cartesian(xlim = c(min, max))
+  }
+  return(p)
 
 }
 
@@ -88,7 +99,7 @@ calculateDistributionStats = function(data) {
 #' 
 #' @param data two columns, variable name (factor) and value
 #' @return ggplot2 object
-violinBoxPlot = function(data) {
+violinBoxPlot = function(data, min, max) {
   
   # Ensure that first column is a factor
   data[,1] = as.factor(data[,1])
@@ -100,6 +111,17 @@ violinBoxPlot = function(data) {
     stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=3) +
     stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
     theme_bw()
+  
+  # Adjust the y axis limits to min and max
+  if (!is.na(min) || !is.na(max)) {
+    # Calculate limits if one not given
+    if (is.na(max))
+      max = max(data[2])
+    if (is.na(min))
+      min = min(data[2])
+    p = p + coord_cartesian(ylim = c(min, max))
+  }
+  return(p)
     
 }
 
@@ -108,7 +130,7 @@ violinBoxPlot = function(data) {
 #' 
 #' @param data two columns, variable name (factor) and value
 #' @return ggplot2 object
-simpleBoxPlot = function(data) {
+simpleBoxPlot = function(data, min, max) {
   
   # Ensure that first column is a factor
   data[,1] = as.factor(data[,1])
@@ -118,5 +140,16 @@ simpleBoxPlot = function(data) {
     geom_boxplot() +
     stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
     theme_bw()
+  
+  # Adjust the y axis limits to min and max
+  if (!is.na(min) || !is.na(max)) {
+    # Calculate limits if one not given
+    if (is.na(max))
+      max = max(data[2])
+    if (is.na(min))
+      min = min(data[2])
+    p = p + coord_cartesian(ylim = c(min, max))
+  }
+  return(p)
   
 }

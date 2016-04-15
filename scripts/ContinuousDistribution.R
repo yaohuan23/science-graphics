@@ -118,15 +118,16 @@ melted[,1] = as.factor(melted[,1]) # Change to factor
 if (!is.na(opt$stats)) {
   # Calculate and store statistics
   stats = calculateDistributionStats(melted)
-  write.csv(stats, opt$stats, row.names=FALSE, quote=FALSE)
-  cat(paste("   Written stats to", opt$stats, "\n"))
+  writeFile(stats, opt$stats)
 }
 
 # Create the plot depending on the type
 p = switch(opt$type,
-            histdens = plotHistogramDensity(melted, opt$bin, opt$min, opt$max),
-            box = simpleBoxPlot(melted, opt$min, opt$max),
-            violin = violinBoxPlot(melted, opt$min, opt$max))
+           hist = histogram(melted, opt$bin, opt$min, opt$max),
+           dens = density(melted, opt$min, opt$max),
+           histdens = histogramDensity(melted, opt$bin, opt$min, opt$max),
+           box = boxPlot(melted, opt$min, opt$max),
+           violin = violinBoxPlot(melted, opt$min, opt$max))
 
 # Set the axis labels if given
 if (!is.na(opt$xlab))

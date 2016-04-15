@@ -23,107 +23,35 @@ printSGheader = function(script) {
   cat("############################################################\n")
 }
 
-#' Parse a CSV file with headers into a data table
-#' @param project name
-#' @return data table from the file
-parseFile = function(project, args) {  
-  data = read.csv(paste("../data/", project, ".csv", sep=""), 
-                   header=TRUE, sep=",", stringsAsFactors=TRUE)
-}
-
-#' Write the data to a CSV file in the results folder
-#' @param project name
-#' @param data matrix, frame or other format to write
-writeResult = function(project, data) {
-  filename = paste("../results/", project, ".csv", sep="")
-  write.csv(data, filename, row.names=FALSE, quote=FALSE)
-  cat(paste("> Writing", project, "to results folder\n"))
-}
-
-#' Write the data to a CSV file in the data folder
-#' @param project name
-#' @param data matrix, frame or other format to write
-writeData = function(project, data) {
-  filename = paste("../data/", project, ".csv", sep="")
-  write.csv(data, filename, row.names=FALSE, quote=FALSE)
-  cat(paste("> Writing", project, "to data folder\n"))
-}
-
-#' Save a plot in the figures folder in the desired format.
-#' Use this function for ggplots.
+#' Detect the format and parse a file with headers into a data frame
 #' 
-#' @param project name
-#' @param plot the figure object (ggplot)
-#' @param format the format of the output svgpdfpng
-saveFigure = function(project, plot, format="pdf") {
-  cat(paste("> Saving", project, "to figures folder\n"))
-  
-  if (grepl("pdf",format)) {
-    # PDF figure
-    pdf(paste("../figures/", project, ".pdf", sep=""))
-    print(plot)
-    log = dev.off() # This supresses printing 'null device'
+#' @param file name with format extension (.csv or .tsv)
+#' @return data frame of the file
+parseFile = function(file) {
+  if (grepl(".csv",file)) {
+    data = read.csv(file, stringsAsFactors=TRUE)
+  } else if (grepl(".tsv",file)) {
+    data = read.delim(file, stringsAsFactors=TRUE)
+  } else {
+    cat("   ERROR: Unsupported input file format\n")
+    stop()
   }
-  if (grepl("svg",format)) {
-    # SVG figure
-    svg(paste("../figures/", project, ".svg", sep=""))
-    print(plot)
-    log = dev.off() # This supresses printing 'null device'
-  }
-  if (grepl("png", format)) {
-    # PNG figure
-    png(paste("../figures/", project, ".png", sep=""), 
-        height = 4096, width = 4096, res = 600)
-    print(plot)
-    log = dev.off() # This supresses printing 'null device'
-  }
+  return(data)
 }
 
-#' Save a plot in the figures folder in the desired format.
-#' Use this function for R plots.
+#' Detect the format and write a data frame to a file
 #' 
-#' @param project name
-#' @param plot the plot object (R plot)
-#' @param format the format of the output svgpdfpng
-saveRPlot = function(project, plot, format="pdf") {
-  cat(paste("> Saving", project, "to figures folder\n"))
-  
-  if (grepl("pdf",format)) {
-    # PDF figure
-    pdf(paste("../figures/", project, ".pdf", sep=""))
-    plot(plot)
-    log = dev.off() # This supresses printing 'null device'
+#' @param data frame to write
+#' @param file name with format extension (.csv or .tsv)
+#' @return data frame of the file
+writeFile = function(data, file) {
+  if (grepl(".csv",file)) {
+    write.csv(data, file, row.names=FALSE, quote=FALSE)
+  } else if (grepl(".tsv",file)) {
+    write(data, file, sep="\t", row.names=FALSE, quote=FALSE)
+  } else {
+    cat("   ERROR: Unsupported output file format\n")
+    stop()
   }
-  if (grepl("svg",format)) {
-    # SVG figure
-    svg(paste("../figures/", project, ".svg", sep=""))
-    plot(plot)
-    log = dev.off() # This supresses printing 'null device'
-  }
-  if (grepl("png", format)) {
-    # PNG figure
-    png(paste("../figures/", project, ".png", sep=""), 
-        height = 4096, width = 4096, res = 600)
-    plot(plot)
-    log = dev.off() # This supresses printing 'null device'
-  }
-}
-
-#' Create the input and output parameter options for the command
-#' line arguments.
-#' 
-#' @param file default input file
-#' @param format default output figure format
-#' @return list of input and output options
-createOptionsIO = function(file, format) {
-  option_list = list(
-    make_option(c("-i", "--input"), default=file,
-                help="Input CSV or TSV data file [default \"%default\"]",
-                metavar="file"),
-    make_option(c("-o", "--output"), default=format,
-                help="Output figure format. Supported pdf, svg and png. 
-              Combinations are possible (e.g. \"pdfpng\" for both pdf
-              and png outputs. [default \"%default\"]",
-                metavar="format")
-  )
+  cat(paste("   Written file to", opt$stats, "\n"))
 }

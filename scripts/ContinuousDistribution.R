@@ -12,8 +12,8 @@ output = NA
 vars = NA
 names = NA
 type = NA
-ymin = NA
-ymax = NA
+min = NA
+max = NA
 bin = NA
 xlab = NA
 ylab = NA
@@ -47,10 +47,10 @@ option_list = c(
               help="Custom variable names, comma separated and in the
                     same order as data columns [default column names]",
               metavar="names"),
-  make_option("--min", type="numeric", default=ymin,
+  make_option("--min", type="numeric", default=min,
               help="The minimum value of the variable",
               metavar="minimum"),
-  make_option("--max", type="numeric", default=ymax,
+  make_option("--max", type="numeric", default=max,
               help="The maximum value of the variable",
               metavar="maximum"),
   make_option("--bin", type="numeric", default=bin,

@@ -8,34 +8,24 @@ The main purpose is to automate the pipeline from data mining calculations to **
 Note that each script (which generates a single figure and an optional text output) is very specific for a single type of analysis, so the scope of the repository is limited. 
 However, the framework allows the easy extension of support for new applications.
 
-## Usage
-1. Save the raw data file in the specified CSV format (`projectname.csv`) in the **data** folder.
-2. If your data file is not in the correct format, you can use some of the scripts in the **helper** folder to convert it.
-3. Open a terminal window and move to the **data** directory ([why do I need to move to the **data** directory?](https://github.com/lafita/science-graphics/issues/12)).
-4. Run the desired script with some options.
+## Installation & Usage
+1. Make sure you have the [R](https://cran.r-project.org) programming language (version `3.0.2` or higher) installed in your system and that `Rscript` is in your path.
+2. Clone locally this github repository wherever you want (`git clone https://github.com/lafita/science-graphics.git`).
+3. Open a new terminal window and move to the **science-graphics** directory.
+4. Allow execution access to all the scripts (`chmod 744 *.R`)
+5. Run the [InstallDependencies.R](InstallDependencies.R) script to install all the required R packages.
+6. From the **science-graphics** directory ([why do I need to stay in the science-graphics directory?](https://github.com/lafita/science-graphics/issues/12)), now you can run any of the other scripts.
 
 ```bash
-cd /path/to/science-graphics/data
-../scripts/Script.R -i projectname [options]
-../scripts/Script.R -h # print help options
-```
-
-The generated figures will be stored in the **figures** folder, in the desired format, with the same `projectname`.
-Any generated text results (statistics, summary, etc) will be stored in the **results** folder, in CSV format only, with the same `projectname`.
-
-To clear all the generated files for one project (or a subset) you can use the [ClearProject.sh](scripts/ClearProject.sh) script in the **helper** folder.
-It will delete all files in the **figures** and **results** folder matching the project name.
-The script does not delete any of the files in the **data** folder, so the raw data will be conserved.
-
-```bash
-./ClearProject.sh projectname
-./ClearProject.sh example1  # This deletes figures and results of example1
-.r/ClearProject.sh example*  # This deletes all example projects at once
+cd /path/to/science-graphics
+./Script.R [options]
+./Script.R -h # print help options
+./Script.R -i input.tsv -o ouput.png # an example
 ```
 
 ## Figures
 The supported graphical visualisations are described here and example figures and input formats are shown alongside.
-The scripts are divided into six statistical topics: 
+The scripts are divided into six categories: 
 
 1. [Distribution](#1-distribution)
 2. [Correlation](#2-correlation)
@@ -45,29 +35,43 @@ The scripts are divided into six statistical topics:
 6. [Networks](#6-networks)
 
 ### 1. Distribution
-The [Distribution.R](source/Distribution.R) source file contains functions to visualize multivariate continuos and discrete **data distributions**.
+The shared code for all scripts is in [Distribution.R](source/Distribution.R).
 
 #### 1.1. Continuous Distributions
-Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input format is shared for all of them, consisting of an optional **Name** column, a **Group** variable column and a **Value** column (see the [example file](data/example_continuous-distribution.csv)).
+Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input can be given with a single file, where each column contains a collection of observations: [example](examples/distributions.csv)).
 
-Name | Group | Value |
----|---|---|---
-Character | Factor | Numeric |
+Use the `ContinuousDistribution.R` script to generate any type.
 
-##### 1.1.1. Histogram Density Plot
-For a set of continuous variables in the same units, the [HistogramDensityPlot.R](scripts/HistogramDensityPlot.R) script plots their density lines together with the underlying histograms slightly transparent in the same plot. The histogram is scaled to the densisty line.
+##### 1.1.1. Histogram
+For a set of continuous variables in the same units, the **hist** type option plots their histograms slightly transparent in the same plot.
 
-![figure](figures/example_continuous-distribution_histogram-density.png)
+```bash
+./ContinuousDistribution.R -i examples/distributions.csv 
+                           -o examples/distributions_hist.png
+                           -t hist --bin 1 --ylab Count
+```
 
-##### 1.1.2. Box Plot
-As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. The [BoxPlot.R](scripts/BoxPlot.R) script generates such a figure.
+<img src="examples/distributions_hist.png" width="500">
 
-![figure](figures/example_continuous-distribution_boxplot.png)
+##### 1.1.2. Density
 
-##### 1.1.3. Violin Box Plot
-However, multimodal properties of the distribution cannot be observed in a simple box plot. A violin plot is needed for that purpose. The [ViolinBoxPlot.R](scripts/ViolinBoxPlot.R) script allows the independent visualization of each variable distribution with its underlying boxplot.
+##### 1.1.3. Histogram & Density
 
-![figure](figures/example_continuous-distribution_violinplot.png)
+##### 1.1.3. Box Plot
+As the number of variables increases and their superposed densities become difficult to visualize, the alternative is to generate a box plot or violin plot. Box plots represent the mean, median and percentiles of each variable distribution, so that they can be visually compared. Use the **box** type option to generate a box plot.
+
+```bash
+./ContinuousDistribution.R -i examples/distributions.csv 
+                           -o examples/distributions_box.png
+                           -v Binomial,Poisson
+                           -t box --ylab Number --xlab Distribution
+                           --min 0 --max 80
+```
+
+<img src="examples/distributions_box.png" width="500">
+
+##### 1.1.4. Violin Plot
+However, multimodal properties of the distribution cannot be observed in a simple box plot. A violin plot is needed for that purpose. The **violin** type option allows the independent visualization of each variable distribution with its underlying boxplot.
 
 #### 1.2. Discrete Distributions
 Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each class (or label, or type) can be visualized.

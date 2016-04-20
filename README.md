@@ -38,9 +38,9 @@ The scripts are divided into six categories:
 The shared code for all scripts is in [Distribution.R](source/Distribution.R).
 
 #### 1.1. Continuous Distributions
-Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input can be given with a single file, where each column contains a collection of observations: [example](examples/distributions.csv)).
+Continuous variable distributions can be represented by histograms, density curves, box plots or violin plots. The input can be given with a single file, where each column contains a collection of observations: [example](examples/distributions.csv).
 
-Use the `ContinuousDistribution.R` script to generate any type.
+Use the [ContinuousDistribution.R](ContinuousDistribution.R) script to calculate statistics and generate a figure from multiple variable distributions.
 
 ##### 1.1.1. Histogram
 For a set of continuous variables in the same units, the **hist** type option plots their histograms slightly transparent in the same plot.
@@ -74,68 +74,81 @@ As the number of variables increases and their superposed densities become diffi
 However, multimodal properties of the distribution cannot be observed in a simple box plot. A violin plot is needed for that purpose. The **violin** type option allows the independent visualization of each variable distribution with its underlying boxplot.
 
 #### 1.2. Discrete Distributions
-Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each class (or label, or type) can be visualized.
+Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each factor of a variable can be visualized. The input is a single column with individual observations: [example](examples/distributions.csv) (one column).
+
+The [DiscreteDistribution.R](DiscreteDistribution.R) script summarizes all the observations into a table of percentages and frequencies and generates a figure.
 
 ##### 1.2.1. Pie Chart
-The pie chart is the simplest of the visualization and allows only the representation of a single variable distribution in each figure. The [PieChart.R](scripts/PieChart.R) script takes as input an optional **Name** column and a **Class** column (see the [example file](data/example_discrete-distribution-single.csv)).
+The pie chart represents the percentage of a discrete variable's factors.
 
-Name | Class |
----|---|---
-Character | Factor |
+```bash
+./DiscreteDistribution.R -i examples/distributions.csv 
+                         -o examples/distributions_pie.png
+                         -v Binomial -n Number -t pie
+```
 
-![figure](figures/example_discrete-distribution-single_pie-chart.png)
+<img src="examples/distributions_pie.png" width="500">
 
 ##### 1.2.2. Bar Plot
-The bar plot allows the representation of multiple variables in the same figure. The [BarPlot.R](scripts/BarPlot.R) script takes as input an optional **Name** column, a **Group** variable column and a **Class** column (see the [example file](data/example_discrete-distribution-multiple.csv)).
+The bar plot represents the frequency of a discrete variable's factors.
 
-Name | Group | Class |
----|---|---|---
-Character | Factor | Factor |
+```bash
+./DiscreteDistribution.R -i examples/distributions.csv 
+                          -o examples/distributions_bar.png
+                          -v Binomial -n Number -t bar
+```
 
-![figure](figures/example_discrete-distribution-multiple_barplot.png)
+<img src="examples/distributions_bar.png" width="500">
 
 ### 2. Correlation
+The shared code for all scripts is in [Correlation.R](source/Correlation.R).
 
-The [Correlation.R](source/Correlation.R) source file contains functions to evaluate and visualize the correlation of discrete variable pair counts (contingency table) and continuous variables.
+#### 2.1. Contingency Table
+For discrete variables, the [ContingencyTableBarplot.R](ContingencyTableBarplot.R) plots the percentage or frequency of each discrete variable pair as a barplot. The input is a column for each variable and a row for each variable pair observation: [example](examples/contingency-table.csv).
 
-#### 2.1. Contingency Table Plot
-For discrete variables, the [BarPlot.R](scripts/BarPlot.R) plots the percentage or frequency of each class combination from two variables as a barplot. The example figure can be found in section *1.1.2. Bar Plot*.
+```bash
+./ContingencyTableBarplot.R -i examples/contingency-table.csv 
+                            -o examples/contingency-table.png
+                            --value Frequency -p stack
+                            -v Group,Class
+```
 
-#### 2.2. Correlation 2D Plot
-For two continuous variables, their correlation is described by fitting a line to a set of value pairs. 
-The [Correlation2DPlot.R](scripts/Correlation2DPlot.R) represents the value pairs as points and draws the line that minimizes the squared error (LSE). 
-The input consists of an optional **Name** column, an optional **Group** variable and two columns, one for each of the variables **Value** (see the [example file](data/example_correlation-2d.csv)).
-
-Name | Group | Value 1 | Value 2 |
----|---|---|---|---
-Character | Factor | Numeric | Numeric |
-
-![figure](figures/example_correlation-2d_correlation.png)
+<img src="examples/contingency-table.png" width="500">
 
 ### 3. Classification
-The [Classification.R](source/Classification.R) source file contains functions to visualize the output and evaluate the performance of **classifiers**, which assigns a class (label) to query data points.
+The shared code for all scripts is in [Classification.R](source/Classification.R).
 
 #### 3.1. Confusion Matrix Plot
 The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). 
-The script [ConfusionMatrix](scripts/ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class and prints the total number of predictions (the matrix entry) only if it is different than 0.
-The input data consists of a set of predictions, organized in an optional **Name** column, an **Actual** (truth) column and a **Prediction** column (see the [example file](data/example_confusion-matrix.csv).
+The script [ConfusionMatrix.R](ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class and prints the total number of predictions (the matrix entry) only if it is different than 0.
+The input data consists of a a column of actual (true) labels and a column of predictions: [example](examples/classification.csv).
 
-Name | Actual | Prediction |
----|---|---|---
-Character | Factor | Factor |
+```bash
+./ConfusionMatrixPlot.R -i examples/classification.csv 
+                        -o examples/confusion-matrix.png
+```
 
-![figure](figures/example_confusion-matrix_conf-matrix.png)
+<img src="examples/confusion-matrix.png" width="500">
 
 #### 3.2. ROC Curve
 The [Receiver Operating Characteristic (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) curve is a graphical plot that illustrates the performance of a binary classifier system as its discrimination threshold is varied. 
 The curve is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.
-The input data consists of an optional **Name** column, an **Algorithm** column (if multiple algorithms are compared), a score **Value** column and a **Relevance** column, where 1 means positive/relevant and 0 negative/irrelevant (see the [example file](data/example_roc-curve.csv)).
+Two types of input formats are accepted:
+- [StAR](http://melolab.org/star): two files, one containing the positive cases and another containing the negative cases. Each of the files contains a column for each prediction method with the scores for each case (rows). Example: [positive](examples/ROC_positive.csv) and [negative](examples/ROC_negative.csv).
+- [easyROC](http://www.biosoft.hacettepe.edu.tr/easyROC/): a single file with a column for each prediction method with the scores for each case (rows) and an additional column with the case status (1 if positive, 0 if negative): [example](ROC.csv).
 
-Name | Algorithm | Value | Relevance |
----|---|---|---
-Character | Factor | Numeric | Factor |
+```bash
+# StAR
+./RocCurve.R -p examples/ROC_positive.csv 
+             -n examples/ROC_negative.csv 
+             -o examples/roc-curve.png
 
-![figure](figures/example_roc-curve_roc-curve.png)
+# easyROC
+./RocCurve.R -i examples/ROC.csv 
+             -o examples/roc-curve.png
+```
+
+<img src="examples/roc-curve.png" width="500">
 
 ### 4. Ranking
 The [Ranking.R](source/Ranking.R) source file contains functions to visualize and evaluate the performance of a **ranking algorithm**.

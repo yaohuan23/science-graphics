@@ -5,8 +5,6 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(plyr))
 suppressPackageStartupMessages(library(mlearning))
-suppressPackageStartupMessages(library(ROCR))
-suppressPackageStartupMessages(library(RColorBrewer))
 
 #' Plot the confusion matrix of a classifier with the actual class in the
 #' x axis and a stacked bar proportional to the predicted class fraction
@@ -85,59 +83,6 @@ toConfusionMatrix = function(data) {
   
   confusion(data, vars = names(data))
   
-}
-
-#' Plot the ROC curve of a binary classifier based on a continuous score
-#' threshold.
-#' 
-#' @param data [Algorithm, Score, Relevance]
-#' @param xmin in percentage [0,100]
-#' @param xmax in percentage [0,100]
-#' @param ymin in percentage [0,100]
-#' @param ymax in percentage [0,100]
-#' @param threshold single threshold for all
-#' @param thresholds individual thresholds for each curve (dominates)
-plotROCurve = function(data, xmin=0, xmax=100, ymin=0, ymax=100, 
-                       threshold = NA, thresholds = list()) {
-  
-  scores = c(split(data[[2]], data[[1]]))
-  labels = c(split(data[[3]], data[[1]]))
-  
-  algorithms = as.character(levels(as.factor(data[[1]])))
-  colors = brewer.pal(max(length(algorithms),3), "Set1")
-  
-  pred <- prediction(scores, labels)
-  perf <- performance(pred, measure = "tpr", x.measure = "fpr")
-  
-  thr = c()
-  if (length(thresholds) > 0){
-    thr = thresholds
-  } else if (!is.na(threshold)){
-    thr[[1]] = threshold
-  }
-  
-  plot(perf,
-       col=as.list(colors),
-       xaxs="i", yaxs="i",
-       xlim=c(xmin/100, xmax/100),
-       ylim=c(ymin/100, ymax/100),
-       xaxis.at=seq(xmin/100,xmax/100, (xmax-xmin)/1000),
-       xaxis.labels=paste(seq(xmin,xmax,(xmax-xmin)/10),"%",sep=""),
-       yaxis.at=seq(ymin/100,ymax/100, (ymax-ymin)/1000),
-       yaxis.labels=paste(seq(ymin,ymax,(ymax-ymin)/10),"%",sep=""),
-       yaxis.las=1,
-       points.col=as.list(colors),
-       points.pch=20,
-       points.cex=2.0,
-       print.cutoffs.at=thr,
-       cutoff.label.function=function(x) { "" },
-       lwd=2)
-  legend("bottomright",
-         algorithms,
-         col=colors,
-         lwd=2,
-         cex=.9,
-         inset=c(.1,.05))
 }
 
 #' Calculate the Cramer's V coefficient of a classifier.

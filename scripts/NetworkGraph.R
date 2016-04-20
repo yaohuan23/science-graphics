@@ -90,8 +90,8 @@ option_list = c(
 opt = parse_args(OptionParser(option_list=option_list))
 
 # Check presence of the required inputs
-if (is.na(opt$edges)){
-  cat("   ERROR: Missing required edges file\n")
+if (is.na(opt$edges) || is.na(opt$output)){
+  cat("   ERROR: Missing required option: edges or output\n")
   stop()
 }
 
@@ -118,7 +118,7 @@ g = graph.data.frame(edges[c(opt$from,opt$to)], directed=opt$directed)
 
 # Styling options for the vertices
 V(g)$label.color = "black"
-if (!is.na(opt$vLabels) && !is.na(vertices) 
+if (!is.na(opt$vLabels) && !is.na(opt$vertices) 
                         && !identical(opt$vLabels,"default")){
   V(g)$label = as.character(vertices[[opt$vLabels]])
 } else if (!identical(opt$vLabels,"default")){
@@ -127,14 +127,14 @@ if (!is.na(opt$vLabels) && !is.na(vertices)
 if (!is.na(opt$vSize)){
   if (grepl("all:",opt$vSize)){
     V(g)$size = as.numeric(gsub('all:','',opt$vSize))
-  } else if (!is.na(vertices)){
+  } else if (!is.na(opt$vertices)){
     V(g)$size = as.numeric(vertices[[opt$vSize]])
   }
 }
 if (!is.na(opt$vColor)){
-  if (grepl("all:",opt$vSize)){
+  if (grepl("all:",opt$vColor)){
     V(g)$color = as.character(gsub('all:','',opt$vColor))
-  } else if (!is.na(vertices)){
+  } else if (!is.na(opt$vertices)){
     V(g)$color = as.factor(vertices[[opt$vColor]])
   }
 }
@@ -175,7 +175,7 @@ if (grepl(".pdf",opt$output)) {
 }
 
 # Set the layout if x and y specified
-if (!is.na(opt$x) && !is.na(opt$y) && !is.na(vertices)){
+if (!is.na(opt$x) && !is.na(opt$y) && !is.na(opt$vertices)){
   coords = data.frame(as.numeric(vertices[[opt$x]]))
   coords$y = as.numeric(vertices[[opt$y]])
   coords = as.matrix(coords)

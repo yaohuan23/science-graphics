@@ -17,6 +17,7 @@ type = NA
 min = NA
 max = NA
 table = NA
+log = FALSE
 
 printSGheader("Discrete Distribution")
 
@@ -48,8 +49,10 @@ option_list = c(
               help="The maximum value of the variable",
               metavar="maximum"),
   make_option("--table", type="character", default=table,
-              help="Calculate and store distribution statistics",
-              metavar="file")
+              help="Store the frequency table",
+              metavar="file"),
+  make_option("--log", action="store_true", default=log,
+              help="Logarithmic scale on the y axis (barplot)")
 )
 opt = parse_args(OptionParser(option_list=option_list))
 
@@ -72,12 +75,12 @@ data = data[opt$var]
 if (!is.na(opt$table)) {
   # Calulate frequency table and store to results
   table = toFrequencyTable(data)
-  writeResult(opt$table, table)
+  writeFile(table, opt$table)
 }
 
 p = switch(opt$type,
            pie = pieChart(data, opt$name),
-           bar = barPlot(data, opt$name, opt$min, opt$max))
+           bar = barPlot(data, opt$name, opt$min, opt$max, opt$log))
 
 # Save the plot as a figure
 if (grepl(".pdf",opt$output)) {

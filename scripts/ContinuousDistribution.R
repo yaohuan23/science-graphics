@@ -45,7 +45,7 @@ option_list = c(
               metavar="variables"),
   make_option(c("-n", "--names"), type="character", default=names,
               help="Custom variable names, comma separated and in the
-                    same order as data columns [default column names]",
+                    same order as vars [default column names]",
               metavar="names"),
   make_option("--min", type="numeric", default=min,
               help="The minimum value of the variable",

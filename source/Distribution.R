@@ -202,19 +202,57 @@ calculateDistributionStats = function(data) {
   
 }
 
-#' Plot each class frequency as a Pie Chart.
+#' Plot each class percentage as a Pie Chart.
 #' 
 #' @param data one column with class instances
+#' @param name of the variable
 #' @return ggplot2 object
-pieChart = function(data) {
+pieChart = function(data, name) {
   
   data = toFrequencyTable(data)
   
   pie = ggplot(data, aes(x = "", y = Percentage)) + 
-    geom_bar(stat = "identity", width = 1, aes_q(fill=as.name(names(data)[1]))) +
+    geom_bar(stat = "identity", width = 0.5, 
+             aes_q(fill=as.name(names(data)[1]))) +
     coord_polar(theta = "y") +
     theme_bw() + 
-    theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+    theme(axis.title.x=element_blank(), 
+          axis.title.y=element_blank()) +
+    guides(fill=guide_legend(title=name))
+  
+}
+
+#' Plot each class frequency as a Bar Plot.
+#' 
+#' @param data one column with class instances
+#' @param name of the variable
+#' @param min minimum count value
+#' @param max maximum count value
+#' @param logarithmic scale y axis
+#' @return ggplot2 object
+barPlot = function(data, name, min, max, log) {
+  
+  data = toFrequencyTable(data)
+  
+  p = ggplot(data, aes(y = Frequency)) + 
+    geom_bar(stat = "identity",
+             aes_q(x=as.name(names(data)[1]))) +
+    theme_bw() +
+    xlab(name)
+  
+  if (log)
+    p = p + scale_y_log10()
+  
+  # Adjust the y axis limits to min and max
+  if (!is.na(min) || !is.na(max)) {
+    # Calculate limits if one not given
+    if (is.na(max))
+      max = max(data$Frequency)
+    if (is.na(min))
+      min = min(data$Frequency)
+    p = p + coord_cartesian(ylim = c(min, max))
+  }
+  return(p)
   
 }
 

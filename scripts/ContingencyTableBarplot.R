@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
-# This script represents a pair of discrete variable counts as a barplot.
+# This script represents a collection discrete variable pair observables
+# as a barplot.
 # It is used to visually represent contingency tables.
 # The format of the input is in two columns, one for each variable.
 # Aleix Lafita - 02.2016
@@ -103,10 +104,6 @@ if (!is.na(opt$table)) {
 }
 
 p = plotContingencyTableBar(data, opt$value, opt$position)
-
-# Set the axis labels if given
-if (!is.na(opt$xlab))
-  p = p + xlab(opt$xlab)
 
 # Adjust the y axis limits to min and max
 if (!is.na(opt$min) || !is.na(opt$max)) {

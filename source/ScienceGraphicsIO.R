@@ -48,10 +48,10 @@ writeFile = function(data, file) {
   if (grepl(".csv",file)) {
     write.csv(data, file, row.names=FALSE, quote=FALSE)
   } else if (grepl(".tsv",file)) {
-    write(data, file, sep="\t", row.names=FALSE, quote=FALSE)
+    write.table(data, file, sep="\t", row.names=FALSE, quote=FALSE)
   } else {
     cat("   ERROR: Unsupported output file format\n")
     stop()
   }
-  cat(paste("   Written file to", opt$stats, "\n"))
+  cat(paste("   Written file to", file, "\n"))
 }

@@ -25,6 +25,7 @@ y = NA
 vSize = NA
 vColor = NA
 dir = TRUE
+set.seed(0)
 
 # Options for specific parameters of this plot
 option_list = c(

@@ -5,7 +5,7 @@
 # positions of each vertex.
 # Aleix Lafita - 03.2016
 
-source("../source/ScienceGraphicsIO.R")
+source("source/ScienceGraphicsIO.R")
 suppressPackageStartupMessages(library(igraph))
 
 printSGheader("Network Graph")

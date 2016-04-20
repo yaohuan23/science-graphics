@@ -5,8 +5,8 @@
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed
-source("../source/ScienceGraphicsIO.R")
-source("../source/Classification.R")
+source("source/ScienceGraphicsIO.R")
+source("source/Classification.R")
 
 # Default input parameters
 input = NA

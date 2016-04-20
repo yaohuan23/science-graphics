@@ -3,8 +3,8 @@
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed
-source("../source/ScienceGraphicsIO.R")
-source("../source/Distribution.R")
+source("source/ScienceGraphicsIO.R")
+source("source/Distribution.R")
 
 # Default input parameters (change them if run from source)
 input = NA
@@ -41,10 +41,10 @@ option_list = c(
               metavar="type"),
   make_option(c("-v", "--vars"), type="character", default=vars,
               help="Columns to use as variables. Comma separated
-                    column names (as in the file) [default all]",
+                    column headers (as in the file) [default all]",
               metavar="variables"),
   make_option(c("-n", "--names"), type="character", default=names,
-              help="Custom variable names, comma separated and in the
+              help="Custom variable names. Comma separated and in the
                     same order as vars [default column names]",
               metavar="names"),
   make_option("--min", type="numeric", default=min,

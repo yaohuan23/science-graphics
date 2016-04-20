@@ -7,7 +7,7 @@
 # Aleix Lafita - 03.2016
 
 # Import all the source files and libraries needed
-source("../source/ScienceGraphicsIO.R")
+source("source/ScienceGraphicsIO.R")
 suppressPackageStartupMessages(library(ROCR))
 suppressPackageStartupMessages(library(RColorBrewer))
 

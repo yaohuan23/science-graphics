@@ -6,8 +6,8 @@
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed
-source("../source/ScienceGraphicsIO.R")
-source("../source/Correlation.R")
+source("source/ScienceGraphicsIO.R")
+source("source/Correlation.R")
 
 # Default input parameters
 input = NA

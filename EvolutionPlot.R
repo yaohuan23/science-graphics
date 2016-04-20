@@ -6,8 +6,8 @@
 # Aleix Lafita - 02.2016
 
 # Import all the source files needed
-source("../source/ScienceGraphicsIO.R")
-source("../source/Evolution.R")
+source("source/ScienceGraphicsIO.R")
+source("source/Evolution.R")
 
 # Default input parameters
 file = "example_evolution"

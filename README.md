@@ -74,7 +74,7 @@ As the number of variables increases and their superposed densities become diffi
 However, multimodal properties of the distribution cannot be observed in a simple box plot. A violin plot is needed for that purpose. The **violin** type option allows the independent visualization of each variable distribution with its underlying boxplot.
 
 #### 1.2. Discrete Distributions
-Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each factor of a variable can be visualized. The input is a single column with individual observations: [example](examples/distributions.csv) (one column).
+Discrete data distributions can be represented by pie charts or bar plots, where the percentage and/or frequency of each factor of a variable can be visualized. The input is a single column with individual observations: [example](examples/contingency-table.csv) (one column).
 
 The [DiscreteDistribution.R](DiscreteDistribution.R) script summarizes all the observations into a table of percentages and frequencies and generates a figure.
 
@@ -82,23 +82,23 @@ The [DiscreteDistribution.R](DiscreteDistribution.R) script summarizes all the o
 The pie chart represents the percentage of a discrete variable's factors.
 
 ```bash
-./DiscreteDistribution.R -i examples/distributions.csv 
-                         -o examples/distributions_pie.png
-                         -v Binomial -n Number -t pie
+./DiscreteDistribution.R -i examples/contingency-table.csv 
+                         -o examples/distribution_pie.png
+                         -v Class -t pie
 ```
 
-<img src="examples/distributions_pie.png" width="500">
+<img src="examples/distribution_pie.png" width="500">
 
 ##### 1.2.2. Bar Plot
 The bar plot represents the frequency of a discrete variable's factors.
 
 ```bash
-./DiscreteDistribution.R -i examples/distributions.csv 
-                          -o examples/distributions_bar.png
-                          -v Binomial -n Number -t bar
+./DiscreteDistribution.R -i examples/contingency-table.csv 
+                          -o examples/distribution_bar.png
+                          -v Class -t bar
 ```
 
-<img src="examples/distributions_bar.png" width="500">
+<img src="examples/distribution_bar.png" width="500">
 
 ### 2. Correlation
 The shared code for all scripts is in [Correlation.R](source/Correlation.R).
@@ -120,7 +120,7 @@ The shared code for all scripts is in [Classification.R](source/Classification.R
 
 #### 3.1. Confusion Matrix Plot
 The most detailed representation of a classifier result is the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). 
-The script [ConfusionMatrix.R](ConfusionMatrix.R) plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class and prints the total number of predictions (the matrix entry) only if it is different than 0.
+The script [ConfusionMatrix.R](ConfusionMatrix.R) calculates the confusion matrix for a collection of predictions and plots each entry of the matrix as a tile colored by the fraction of the predicted class for its actual class. The plot also shows the total number of predictions (the matrix entry) only if it is different than 0.
 The input data consists of a a column of actual (true) labels and a column of predictions: [example](examples/classification.csv).
 
 ```bash

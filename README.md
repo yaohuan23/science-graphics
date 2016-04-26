@@ -139,32 +139,36 @@ Two types of input formats are accepted:
 
 ```bash
 # StAR
-./RocCurve.R -p examples/ROC_positive.csv 
-             -n examples/ROC_negative.csv 
-             -o examples/roc-curve.png
+./RocCurve.R -p examples/ROC_positive.tsv -n examples/ROC_negative.tsv 
+             -o examples/roc-curve.png -m Method1,Method3,Method4 
+             --names Method\ 1,Method\ 3,Method\ 4 -t 0.4,6,30
 
 # easyROC
-./RocCurve.R -i examples/ROC.csv 
-             -o examples/roc-curve.png
+./RocCurve.R -i examples/ROC.tsv -o examples/roc-curve.png 
+             -m Method1,Method3,Method4 --names Method\ 1,Method\ 3,Method\ 4 
+             --status Status --thr 0.4,6,30
 ```
 
 <img src="examples/roc-curve.png" width="500">
 
 ### 4. Ranking
-The [Ranking.R](source/Ranking.R) source file contains functions to visualize and evaluate the performance of a **ranking algorithm**.
-The results must have a **relevance score**, which can be binary (0 is non-relevant, 1 is relevant), discrete (e.g, scale of relevance from 1 to 5, 5 being the most relevant) or continuous (e.g, relevance score between 0 and 1).
-The ranking algorithm returns an input set sorted by relevance, where most relevant relevant inputs are at the top (beginning).
-Given the position of each input in the resulting sorted set and its relevance score, the performance of the algorithm is determined by a score that trades-off precision and recall in the ranking list.
+The shared code for all scripts is in [Ranking.R](source/Ranking.R).
+
+Each object of the ranking must have a **relevance score**, which can be binary (0 is non-relevant, 1 is relevant), discrete (e.g, scale of relevance from 1 to 5, 5 being the most relevant) or continuous (e.g, relevance score between 0 and 1).
+The ranking algorithm returns an input set of sorted by relevance, where most relevant relevant inputs are at the top (beginning).
+Given the position of each object in the resulting sorted set and its relevance score, the performance of the algorithm is determined by a score that trades-off precision and recall in the ranking list.
 
 #### 4.1. Precision-Recall Curve
-For binary relevance scores, the [PrecisionRecallCurve](scripts/PrecisionRecallCurve.R) script plots the precision in function of the recall, what is called PR curve.
-The input consists of an optional **Name** column and a **Relevance** score column, which is sorted in the ranking order returned by the algorithm (see the [example file](data/example_pr-curve.csv)).
+For binary relevance scores, the [PrecisionRecallCurve](scripts/PrecisionRecallCurve.R) script plots the precision in function of the recall, known as the PR curve.
+The input consists of a single column with a binary indicator whether the object in the position (row) is relevant (1) or not (2). The column is sorted in the ranking order returned by the algorithm: [example](ranking.csv).
 
-Name | Relevance |
----|---|
-Character | Numeric |
+```bash
+./PrecisionRecallCurve.R -i examples/ranking.csv 
+                         -o examples/pr-curve.png 
+                         -v Relevance
+```
 
-![figure](figures/example_pr-curve_pr-curve.png)
+<img src="examples/pr-curve.png" width="500">
   
 ### 5. Evolution
 The [Evolution.R](source/Evolution.R) source file contains functions to visualize variable fluctuations and evolution in function of time (ODEs), step (MC simulations), or other independent variables (like wavelength, distance, etc).
@@ -177,20 +181,27 @@ Name | Group | Independent | Dependent 1 | Dependent 2 | ... | Dependent N |
 ---|---|---|---|---|---|---|
 Character | Factor | Numeric | Numeric | Numeric | Numeric | Numeric |
 
-![figure](figures/example_evolution_evolution.png)
+<img src="examples/evolution.png" width="500">
   
 ### 6. Networks
-The [Networks.R](source/Networks.R) source file contains functions to visualize graphs.
+The [NetworkGraph.R](scripts/NetworkGraph.R) script can be used to plot a graph from a collection of edges and edge properties: [example](netwok-2_vertices.csv). Addtitionally, a collection of vertex properties can be specified in a separate file: [example](network-2_vertices.csv).
 
-#### 6.1. Network Graph
-For a simple graph with optional weighted or labeled edges the [NetworkGraph.R](scripts/NetworkGraph.R) script can be used.
-The input consists of a set of edges, specified by the columns **From** and **To**, followed by an optional **Weight** column for the edge (see the [example file](data/example_network.csv)).
+```bash
+./NetworkGraph.R -e examples/network-1.csv -o examples/network-1.png 
+                 -f From -t To --eColor Interface 
+                 --vLabel default --vColor all:lemonchiffon
+```
 
-From | To | Weight
----|---|---
-Factor | Factor | Numeric
+<img src="examples/network-1.png" width="500">
 
-![figure](figures/example_network_network-graph.png)
+```bash
+./NetworkGraph.R -e examples/network-2_edges.csv -v examples/network-2_vertices.csv 
+                 -o examples/network-2.png -d -f From -t To 
+                 --eLabels Area --eColor Interface --eSize all:1 
+                 --vLabels Vertex --vSize all:30 --vColor Type -x x -y y
+```
+
+<img src="examples/network-2.png" width="500">
 
 ## Dependencies
 - **R** version `3.0.2` or higher.
@@ -206,4 +217,4 @@ Factor | Factor | Numeric
 
 ## References
 
-Some of the plots have been taken from the book *R Graphics Cookbook*, written by Winston Chang and published by O'REILLY.
+Some of the plots have been taken from the book **R Graphics Cookbook**, written by Winston Chang and published by *O'REILLY*.

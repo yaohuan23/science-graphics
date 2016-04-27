@@ -126,6 +126,7 @@ The input data consists of a a column of actual (true) labels and a column of pr
 ```bash
 ./ConfusionMatrixPlot.R -i examples/classification.csv 
                         -o examples/confusion-matrix.png
+                        -a Actual -p Prediction
 ```
 
 <img src="examples/confusion-matrix.png" width="500">

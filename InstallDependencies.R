@@ -15,4 +15,4 @@ install.packages("mlearning", repos=rep)
 install.packages("igraph", repos=rep)
 install.packages("ROCR", repos=rep)
 
-cat("   Installation Done!")
+cat("   Installation Done!\n")

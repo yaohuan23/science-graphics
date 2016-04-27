@@ -14,6 +14,8 @@ output = NA
 stats = NA
 matrix = NA
 labelSize = 4
+actual = NA
+pred = NA
 
 printSGheader("Confusion Matrix Plot")
 
@@ -27,6 +29,14 @@ option_list = c(
               help="Output figure file. Supported pdf, svg and png
               extensions (required)",
               metavar="file"),
+  make_option(c("-a", "--actual"), type="character", default=actual,
+              help="Column to use as actual labels (column header)
+                    [default first column]",
+              metavar="column"),
+  make_option(c("-p", "--pred"), type="character", default=pred,
+              help="Column to use as predicted labels (column header)
+                    [default second column]",
+              metavar="column"),
   make_option(c("-s", "--stats"), type="character", default=stats,
               help="Calculate and store performance metrics",
               metavar="file"),
@@ -45,11 +55,15 @@ if (is.na(opt$input) || is.na(opt$output)){
   stop()
 }
 
-# data = [Name] Actual Prediction
 data = parseFile(opt$input)
-if (ncol(data) > 2){
-  data = data[c(2,3)]
+
+# Check actual and predicted columns
+if (is.na(opt$actual))
+  opt$actual = names(data)[1]
+if (is.na(opt$pred)){
+  opt$pred = names(data)[2]
 }
+data = data[c(opt$actual, opt$pred)]
 
 # Calculate and write confusion matrix
 matrix = toConfusionMatrix(data)

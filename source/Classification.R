@@ -27,7 +27,7 @@ plotConfusionMatrixBar = function(matrix) {
     scale_alpha_discrete(range=c(0.3,1)) +
     #scale_fill_brewer(palette="Set2") +
     guides(alpha=FALSE) +
-    theme_bw()
+    theme_bw() + theme(axis.text.x = element_text(angle = 45))
   
   # Add the total number of observables at the top of the bars
   data$Total = rowSums(data[,-1])
@@ -59,7 +59,7 @@ plotConfusionMatrix = function(matrix, labelSize = 4) {
                                       label=sprintf('%0.f', Freq)),
                     size = labelSize) +
     scale_fill_gradient(low="white", high="tomato3", na.value="white") +
-    theme_bw()
+    theme_bw() + theme(axis.text.x = element_text(angle = 45))
   
 }
 

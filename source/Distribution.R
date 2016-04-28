@@ -141,7 +141,7 @@ violinBoxPlot = function(data, min, max) {
     geom_boxplot(width=.1, fill="black", outlier.colour=NA) +
     stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=3) +
     stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
-    theme_bw()
+    theme_bw() + theme(axis.text.x = element_text(angle = 45))
   
   # Adjust the y axis limits to min and max
   if (!is.na(min) || !is.na(max)) {
@@ -170,7 +170,7 @@ boxPlot = function(data, min, max) {
                          y=as.name(names(data)[2]))) +
     geom_boxplot() +
     stat_summary(fun.y=mean, geom="point", fill="white", shape=23, size=3) +
-    theme_bw()
+    theme_bw() + theme(axis.text.x = element_text(angle = 45))
   
   # Adjust the y axis limits to min and max
   if (!is.na(min) || !is.na(max)) {
@@ -237,7 +237,7 @@ barPlot = function(data, name, min, max, log) {
   p = ggplot(data, aes(y = Frequency)) + 
     geom_bar(stat = "identity",
              aes_q(x=as.name(names(data)[1]))) +
-    theme_bw() +
+    theme_bw() + theme(axis.text.x = element_text(angle = 45)) +
     xlab(name)
   
   if (log)

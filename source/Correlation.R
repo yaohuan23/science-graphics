@@ -49,7 +49,7 @@ plotContingencyTableBar = function(data, type="Percentage", position="dodge") {
     geom_text(data=labels, aes_q(x=as.name(names(labels)[1]), 
                                  y=as.name("Position"), 
                                  label=as.name("Total")), size=4) +
-    theme_bw()
+    theme_bw() + theme(axis.text.x = element_text(angle = 45))
   
 }
 

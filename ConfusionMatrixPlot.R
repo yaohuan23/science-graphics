@@ -16,6 +16,8 @@ matrix = NA
 labelSize = 4
 actual = NA
 pred = NA
+xlab = NA
+ylab = NA
 
 printSGheader("Confusion Matrix Plot")
 
@@ -37,6 +39,10 @@ option_list = c(
               help="Column to use as predicted labels (column header)
                     [default second column]",
               metavar="column"),
+  make_option("--xlab", type="character", default=xlab,
+              help="The x-axis label", metavar="label"),
+  make_option("--ylab", type="character", default=ylab,
+              help="The y-axis label", metavar="label"),
   make_option(c("-s", "--stats"), type="character", default=stats,
               help="Calculate and store performance metrics",
               metavar="file"),
@@ -80,6 +86,12 @@ if (!is.na(opt$stats)) {
 }
 
 p = plotConfusionMatrix(matrix, opt$labSize)
+
+# Set the axis labels if given
+if (!is.na(opt$xlab))
+  p = p + xlab(opt$xlab)
+if (!is.na(opt$ylab))
+  p = p + ylab(opt$ylab)
 
 # Save the plot as a figure
 if (grepl(".pdf",opt$output)) {
